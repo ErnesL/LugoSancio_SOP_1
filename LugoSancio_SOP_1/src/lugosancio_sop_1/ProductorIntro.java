@@ -5,6 +5,7 @@
  */
 package lugosancio_sop_1;
 
+import Interface.Interface;
 import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,34 +18,34 @@ public class ProductorIntro extends Thread {
 
     int numeroDeProductores = 1;
     int sueldo = 5;
-    int almacenamiento = 0;
-    int almacenamientoMax = 30;
     int montoPorPagar = 0;
+    int duracionDiaEnSegundos;
     Semaphore sem;
     String nombre;
 
-    public ProductorIntro(Semaphore sem, int numeroProductores, String nombre, int almacenamientoMax) {
+    public ProductorIntro(Semaphore sem, int numeroProductores, String nombre, int duracionDiaEnSegundos) {
         this.numeroDeProductores = numeroProductores;
         this.sem = sem;
         this.nombre = nombre;
-        this.almacenamientoMax = almacenamientoMax;
+
+        this.duracionDiaEnSegundos = duracionDiaEnSegundos;
     }
 
     @Override
     public void run() {
         try {
             sem.acquire();
-            System.out.println("consegui el permiso");
-            while (almacenamiento < almacenamientoMax) {
+            while (Interface.inventarioIntro < Interface.driveIntro) {
                 this.montoPorPagar = this.montoPorPagar + this.sueldo * this.numeroDeProductores;
-                almacenamiento++;
-                System.out.println("Aumente el almacenamiento en 1");
-                System.out.println("El almacenamiento va por: " + this.almacenamiento);
-
+                Interface.inventarioIntro++;
+                System.out.println(this.nombre + "--->" + Interface.inventarioIntro);
+                sleep(duracionDiaEnSegundos*1000);
             }
-            System.out.println("ya se lleno");
-            System.out.println("El monto a pagar es: " + this.montoPorPagar);
+            System.out.println(this.nombre + "ya se lleno");
+            System.out.println(this.nombre +"El monto a pagar es: " + this.montoPorPagar);
             sem.release();
+            
+            
 
         } catch (InterruptedException ex) {
             Logger.getLogger(ProductorIntro.class.getName()).log(Level.SEVERE, null, ex);
@@ -52,9 +53,6 @@ public class ProductorIntro extends Thread {
 
     }
 
-    public void setAlmacenamientoMax(int almacenamientoMax) {
-        this.almacenamientoMax = almacenamientoMax;
-    }
 
     public void setNumeroDeProductores(int numeroDeProductores) {
         this.numeroDeProductores = numeroDeProductores;
@@ -68,13 +66,6 @@ public class ProductorIntro extends Thread {
         this.sueldo = sueldo;
     }
 
-    public int getAlmacenamiento() {
-        return almacenamiento;
-    }
-
-    public void setAlmacenamiento(int almacenamiento) {
-        this.almacenamiento = almacenamiento;
-    }
 
     public String getNombre() {
         return nombre;

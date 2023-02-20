@@ -8,6 +8,7 @@ package lugosancio_sop_1;
 import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import Interface.Interface;
 
 /**
  *
@@ -17,38 +18,51 @@ public class Ensamblador extends Thread {
 
     int numeroDeProductores = 1;
     int sueldo = 8;
-    int almacenamiento = 0;
-    int almacenamientoMax = 50;
+    int capitulosListos = 0;
     int montoPorPagar = 0;
+    int duracionDiaEnSegundos;
     Semaphore sem;
     String nombre;
 
-    public Ensamblador(Semaphore sem, int numeroProductores, String nombre, int almacenamientoMax) {
+    public Ensamblador(Semaphore sem, int numeroProductores, String nombre, int duracionDiaEnSegundos) {
         this.numeroDeProductores = numeroProductores;
         this.sem = sem;
         this.nombre = nombre;
-        this.almacenamientoMax = almacenamientoMax;
+        this.duracionDiaEnSegundos = duracionDiaEnSegundos;
     }
 
     @Override
     public void run() {
         try {
             sem.acquire();
-            while (almacenamiento < almacenamientoMax) {
-                this.montoPorPagar = this.montoPorPagar + this.sueldo * this.numeroDeProductores;
-                almacenamiento++;
+            while (true) {
+                if (Interface.inventarioIntro > 0 && Interface.inventarioCreditos > 0 && Interface.inventarioInicio > 0 && Interface.inventarioCierre > 0 && Interface.inventarioPlottwist > 0) {
 
+                    //TODO: agregar vaina para que cada 5 caps saque uno con plot twist
+                    capitulosListos++;
+                    Interface.driveIntro--;
+                    Interface.driveCreditos--;
+                    Interface.driveInicio--;
+                    Interface.driveCierre--;
+                    Interface.drivePlottwist--;
+
+                    System.out.println("Capitulo creado exitosamente");
+                    System.out.println("Capitulos listos: " + this.capitulosListos);
+
+                    Thread.sleep(duracionDiaEnSegundos * 1000);
+
+                } else {
+                    //Cuando no hay caps para crear
+                    System.out.println("No hay caps para crear");
+                    Thread.sleep(duracionDiaEnSegundos * 1000);
+                }
+                sem.release();
             }
-            sem.release();
 
         } catch (InterruptedException ex) {
             Logger.getLogger(Ensamblador.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-    }
-
-    public void setAlmacenamientoMax(int almacenamientoMax) {
-        this.almacenamientoMax = almacenamientoMax;
     }
 
     public void setNumeroDeProductores(int numeroDeProductores) {
@@ -61,14 +75,6 @@ public class Ensamblador extends Thread {
 
     public void setSueldo(int sueldo) {
         this.sueldo = sueldo;
-    }
-
-    public int getAlmacenamiento() {
-        return almacenamiento;
-    }
-
-    public void setAlmacenamiento(int almacenamiento) {
-        this.almacenamiento = almacenamiento;
     }
 
     public String getNombre() {

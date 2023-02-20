@@ -5,6 +5,7 @@
  */
 package lugosancio_sop_1;
 
+import Interface.Interface;
 import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,38 +18,37 @@ public class ProductorCreditos extends Thread {
 
     int numeroDeProductores = 1;
     int sueldo = 3;
-    int almacenamiento = 0;
-    int almacenamientoMax = 25;
     int montoPorPagar = 0;
+    int duracionDiaEnSegundos;
     Semaphore sem;
     String nombre;
 
-    public ProductorCreditos(Semaphore sem, int numeroProductores, String nombre, int almacenamientoMax) {
+    public ProductorCreditos(Semaphore sem, int numeroProductores, String nombre, int duracionDiaEnSegundos) {
         this.numeroDeProductores = numeroProductores;
         this.sem = sem;
         this.nombre = nombre;
-        this.almacenamientoMax = almacenamientoMax;
+        this.duracionDiaEnSegundos = duracionDiaEnSegundos;
     }
 
     @Override
     public void run() {
         try {
             sem.acquire();
-            while (almacenamiento < almacenamientoMax) {
+            while (Interface.inventarioCreditos < Interface.driveCreditos) {
                 this.montoPorPagar = this.montoPorPagar + this.sueldo * this.numeroDeProductores;
-                almacenamiento++;
-
+                Interface.inventarioCreditos++;
+                System.out.println(this.nombre + "--->" + Interface.inventarioCreditos);
+                sleep(duracionDiaEnSegundos*1000);
+                
             }
+            System.out.println(this.nombre + "ya se lleno");
+            System.out.println(this.nombre +"El monto a pagar es: " + this.montoPorPagar);
             sem.release();
 
         } catch (InterruptedException ex) {
             Logger.getLogger(ProductorCreditos.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-    }
-
-    public void setAlmacenamientoMax(int almacenamientoMax) {
-        this.almacenamientoMax = almacenamientoMax;
     }
 
     public void setNumeroDeProductores(int numeroDeProductores) {
@@ -61,14 +61,6 @@ public class ProductorCreditos extends Thread {
 
     public void setSueldo(int sueldo) {
         this.sueldo = sueldo;
-    }
-
-    public int getAlmacenamiento() {
-        return almacenamiento;
-    }
-
-    public void setAlmacenamiento(int almacenamiento) {
-        this.almacenamiento = almacenamiento;
     }
 
     public String getNombre() {

@@ -8,6 +8,7 @@ package lugosancio_sop_1;
 import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import Interface.Interface;
 
 /**
  *
@@ -17,28 +18,32 @@ public class ProductorCierre extends Thread {
 
     int numeroDeProductores = 1;
     double sueldo = 7.5;
-    int almacenamiento = 0;
-    int almacenamientoMax = 55;
     int montoPorPagar = 0;
+    int duracionDiaEnSegundos;
     Semaphore sem;
     String nombre;
 
-    public ProductorCierre(Semaphore sem, int numeroProductores, String nombre, int almacenamientoMax) {
+    public ProductorCierre(Semaphore sem, int numeroProductores, String nombre, int duracionDiaEnSegundos) {
         this.numeroDeProductores = numeroProductores;
         this.sem = sem;
         this.nombre = nombre;
-        this.almacenamientoMax = almacenamientoMax;
+        this.duracionDiaEnSegundos = duracionDiaEnSegundos;
     }
 
     @Override
     public void run() {
         try {
             sem.acquire();
-            while (almacenamiento < almacenamientoMax) {
+            while (Interface.inventarioCierre < Interface.driveCierre) {
                 this.montoPorPagar = (int) (this.montoPorPagar + this.sueldo * this.numeroDeProductores);
-                almacenamiento++;
+                Interface.inventarioCierre++;
+                System.out.println(this.nombre + "--->" + Interface.inventarioCierre);
+                sleep(duracionDiaEnSegundos*1000);
+                
 
             }
+            System.out.println(this.nombre + "ya se lleno");
+            System.out.println(this.nombre +"El monto a pagar es: " + this.montoPorPagar);
             sem.release();
 
         } catch (InterruptedException ex) {
@@ -47,9 +52,7 @@ public class ProductorCierre extends Thread {
 
     }
 
-    public void setAlmacenamientoMax(int almacenamientoMax) {
-        this.almacenamientoMax = almacenamientoMax;
-    }
+
 
     public void setNumeroDeProductores(int numeroDeProductores) {
         this.numeroDeProductores = numeroDeProductores;
@@ -63,13 +66,6 @@ public class ProductorCierre extends Thread {
         this.sueldo = sueldo;
     }
 
-    public int getAlmacenamiento() {
-        return almacenamiento;
-    }
-
-    public void setAlmacenamiento(int almacenamiento) {
-        this.almacenamiento = almacenamiento;
-    }
 
     public String getNombre() {
         return nombre;

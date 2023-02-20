@@ -29,27 +29,33 @@ import lugosancio_sop_1.ProductorPlottwist;
 public class Interface extends javax.swing.JFrame {
 
     //Config
-    int duracionDiaEnSegundos = 1;
+    int duracionDiaEnSegundos = 5;
     int cantidadDeDiasEntreLanzamientos = 2;
     static int dias = 0;
-    
+
     //Drive
-    static int driveIntro = 30;
-    static int driveCreditos = 25;
-    static int driveInicio = 50;
-    static int driveCierre = 55;
-    static int drivePlottwist = 40;
+    public static int driveIntro = 30;
+    public static int driveCreditos = 25;
+    public static int driveInicio = 50;
+    public static int driveCierre = 55;
+    public static int drivePlottwist = 40;
+
+    public static int inventarioIntro = 0;
+    public static int inventarioCreditos = 0;
+    public static int inventarioInicio = 0;
+    public static int inventarioCierre = 0;
+    public static int inventarioPlottwist = 0;
 
     //Semaphore
     Semaphore sem = new Semaphore(8);
 
     //Threads
-    ProductorIntro tIntro = new ProductorIntro(sem, 1, "Intro", driveInicio);
-    ProductorCreditos tCreditos = new ProductorCreditos(sem, 1, "Creditos", driveCreditos);
-    ProductorInicio tInicio = new ProductorInicio(sem, 1, "Inicio", driveInicio);
-    ProductorCierre tCierre = new ProductorCierre(sem, 1, "Cierre", driveCierre);
-    ProductorPlottwist tPlottwist = new ProductorPlottwist(sem, 1, "Plottwist", drivePlottwist);
-    Ensamblador tEnsamblador = new Ensamblador(sem, 1, "Ensamblador", drivePlottwist);
+    ProductorIntro tIntro = new ProductorIntro(sem, 1, "Intro", duracionDiaEnSegundos);
+    ProductorCreditos tCreditos = new ProductorCreditos(sem, 1, "Creditos", duracionDiaEnSegundos);
+    ProductorInicio tInicio = new ProductorInicio(sem, 1, "Inicio", duracionDiaEnSegundos);
+    ProductorCierre tCierre = new ProductorCierre(sem, 1, "Cierre", duracionDiaEnSegundos);
+    ProductorPlottwist tPlottwist = new ProductorPlottwist(sem, 1, "Plottwist", duracionDiaEnSegundos);
+    Ensamblador tEnsamblador = new Ensamblador(sem, 1, "Ensamblador", duracionDiaEnSegundos);
 
     public Interface() {
         initComponents();
@@ -86,13 +92,6 @@ public class Interface extends javax.swing.JFrame {
             //Ensamblador
             velmaEnsambladores.setText(dataSplit[4]);
             tEnsamblador.setNumeroDeProductores(Integer.parseInt(velmaEnsambladores.getText()));
-
-            //Modificacion a Threads
-            tIntro.setAlmacenamientoMax(driveIntro);
-            tCreditos.setAlmacenamientoMax(driveCreditos);
-            tInicio.setAlmacenamientoMax(driveInicio);
-            tCierre.setAlmacenamientoMax(driveCierre);
-            tPlottwist.setAlmacenamientoMax(drivePlottwist);
 
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
@@ -1119,13 +1118,6 @@ public class Interface extends javax.swing.JFrame {
             velmaEnsambladores.setText(dataSplit[4]);
             tEnsamblador.setNumeroDeProductores(Integer.parseInt(velmaEnsambladores.getText()));
 
-            //Modificacion a Threads
-            tIntro.setAlmacenamientoMax(driveIntro);
-            tCreditos.setAlmacenamientoMax(driveCreditos);
-            tInicio.setAlmacenamientoMax(driveInicio);
-            tCierre.setAlmacenamientoMax(driveCierre);
-            tPlottwist.setAlmacenamientoMax(drivePlottwist);
-
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -1244,7 +1236,7 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_velmaEnsambladoresUpActionPerformed
 
     private void startActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_startActionPerformed
 
     /**
