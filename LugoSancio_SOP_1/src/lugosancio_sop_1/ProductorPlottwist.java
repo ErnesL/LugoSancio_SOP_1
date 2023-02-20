@@ -36,10 +36,10 @@ public class ProductorPlottwist extends Thread {
         try {
             sem.acquire();
             while (Interface.inventarioPlottwist < Interface.drivePlottwist) {
-                this.montoPorPagar = this.montoPorPagar + this.sueldo * this.numeroDeProductores;
+                Thread.sleep(duracionDiaEnSegundos*1000);
+                this.montoPorPagar = (int) (this.montoPorPagar + this.sueldo * this.numeroDeProductores);
                 Interface.inventarioPlottwist++;
-                System.out.println(this.nombre + "--->" + Interface.inventarioPlottwist);
-                sleep(duracionDiaEnSegundos * 1000);
+                System.out.println("Hay " + Interface.inventarioPlottwist +" "+ this.nombre + " creadas");
 
             }
             System.out.println(this.nombre + "ya se lleno");

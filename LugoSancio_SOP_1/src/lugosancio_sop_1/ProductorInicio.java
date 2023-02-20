@@ -36,11 +36,10 @@ public class ProductorInicio extends Thread {
         try {
             sem.acquire();
             while (Interface.inventarioInicio < Interface.driveInicio) {
-                this.montoPorPagar = this.montoPorPagar + this.sueldo * this.numeroDeProductores;
+                Thread.sleep(duracionDiaEnSegundos*1000);
+                this.montoPorPagar = (int) (this.montoPorPagar + this.sueldo * this.numeroDeProductores);
                 Interface.inventarioInicio++;
-                System.out.println(this.nombre + "--->" + Interface.inventarioInicio);
-                sleep(duracionDiaEnSegundos*1000);
-
+                System.out.println("Hay " + Interface.inventarioInicio +" "+ this.nombre + " creadas");
             }
             System.out.println(this.nombre + "ya se lleno");
             System.out.println(this.nombre +"El monto a pagar es: " + this.montoPorPagar);

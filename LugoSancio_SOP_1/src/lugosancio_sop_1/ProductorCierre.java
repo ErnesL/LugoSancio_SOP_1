@@ -35,12 +35,10 @@ public class ProductorCierre extends Thread {
         try {
             sem.acquire();
             while (Interface.inventarioCierre < Interface.driveCierre) {
+                Thread.sleep(duracionDiaEnSegundos*1000);
                 this.montoPorPagar = (int) (this.montoPorPagar + this.sueldo * this.numeroDeProductores);
                 Interface.inventarioCierre++;
-                System.out.println(this.nombre + "--->" + Interface.inventarioCierre);
-                sleep(duracionDiaEnSegundos*1000);
-                
-
+                System.out.println("Hay " + Interface.inventarioCierre +" "+ this.nombre + " creadas");
             }
             System.out.println(this.nombre + "ya se lleno");
             System.out.println(this.nombre +"El monto a pagar es: " + this.montoPorPagar);
