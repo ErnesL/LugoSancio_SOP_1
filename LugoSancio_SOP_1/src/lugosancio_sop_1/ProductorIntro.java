@@ -9,6 +9,8 @@ import Interface.Interface;
 import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static lugosancio_sop_1.LugoSancio_SOP_1.eIntro;
+import static lugosancio_sop_1.LugoSancio_SOP_1.sIntro;
 
 /**
  *
@@ -31,9 +33,37 @@ public class ProductorIntro extends Thread {
         this.duracionDiaEnSegundos = duracionDiaEnSegundos;
     }
 
+//    @Override
+//    public void run() {
+//        try {
+//            sem.acquire();
+//            while (Interface.inventarioIntro < Interface.driveIntro) {
+//                Thread.sleep(duracionDiaEnSegundos*1000);
+//                this.montoPorPagar = this.montoPorPagar + this.sueldo * this.numeroDeProductores;
+//                Interface.inventarioIntro++;
+//                System.out.println("Hay " + Interface.inventarioIntro +" "+ this.nombre + " creadas");
+//            }
+//            System.out.println(this.nombre + "ya se lleno");
+//            System.out.println(this.nombre +"El monto a pagar es: " + this.montoPorPagar);
+//            sem.release();
+//            
+//            
+//
+//        } catch (InterruptedException ex) {
+//            Logger.getLogger(ProductorIntro.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//
+//    }
+    
     @Override
     public void run() {
         try {
+            //primero se revisa si hay espacio en el buffer
+            eIntro.acquire();
+            sIntro.acquire();
+            this.montoPorPagar = this.montoPorPagar + this.sueldo * this.numeroDeProductores;
+            Interface.inventarioIntro++;
+            
             sem.acquire();
             while (Interface.inventarioIntro < Interface.driveIntro) {
                 Thread.sleep(duracionDiaEnSegundos*1000);

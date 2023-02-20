@@ -47,6 +47,7 @@ public class Ensamblador extends Thread {
                     if (capitulosListos % 5 == 0) {
                         Interface.inventarioPlottwist--;
                     }
+                    System.out.println("El ensamblador ha empezado a crear un capítulo");
                     //dormir ensamblador dos días para que cree el cap
                     Thread.sleep(duracionDiaEnSegundos * 2000);
                     capitulosListos++;
