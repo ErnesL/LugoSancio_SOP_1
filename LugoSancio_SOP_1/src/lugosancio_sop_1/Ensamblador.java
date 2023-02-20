@@ -39,18 +39,21 @@ public class Ensamblador extends Thread {
                 if (Interface.inventarioIntro > 0 && Interface.inventarioCreditos > 0 && Interface.inventarioInicio > 0 && Interface.inventarioCierre > 0 && Interface.inventarioPlottwist > 0) {
 
                     //TODO: agregar vaina para que cada 5 caps saque uno con plot twist
-                    capitulosListos++;
                     Interface.inventarioIntro--;
                     Interface.inventarioCreditos--;
                     Interface.inventarioInicio--;
                     Interface.inventarioCierre--;
-                    Interface.inventarioPlottwist--;
-
+                    //agrega plot twist al cap si ya es el quinto cap
+                    if (capitulosListos % 5 == 0) {
+                        Interface.inventarioPlottwist--;
+                    }
+                    //dormir ensamblador dos días para que cree el cap
+                    Thread.sleep(duracionDiaEnSegundos * 2000);
+                    capitulosListos++;
+                    
                     System.out.println("Capitulo creado exitosamente");
                     System.out.println("Capitulos listos: " + this.capitulosListos);
-
-                    Thread.sleep(duracionDiaEnSegundos * 1000);
-
+                    
                 } else {
                     //Cuando no hay caps para crear
                     System.out.println("No hay caps para crear");
