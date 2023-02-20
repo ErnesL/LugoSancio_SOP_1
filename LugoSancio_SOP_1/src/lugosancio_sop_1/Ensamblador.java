@@ -40,11 +40,11 @@ public class Ensamblador extends Thread {
 
                     //TODO: agregar vaina para que cada 5 caps saque uno con plot twist
                     capitulosListos++;
-                    Interface.driveIntro--;
-                    Interface.driveCreditos--;
-                    Interface.driveInicio--;
-                    Interface.driveCierre--;
-                    Interface.drivePlottwist--;
+                    Interface.inventarioIntro--;
+                    Interface.inventarioCreditos--;
+                    Interface.inventarioInicio--;
+                    Interface.inventarioCierre--;
+                    Interface.inventarioPlottwist--;
 
                     System.out.println("Capitulo creado exitosamente");
                     System.out.println("Capitulos listos: " + this.capitulosListos);
