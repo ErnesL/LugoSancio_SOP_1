@@ -9,6 +9,19 @@ import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import Interface.Interface;
+import static lugosancio_sop_1.LugoSancio_SOP_1.eCierre;
+import static lugosancio_sop_1.LugoSancio_SOP_1.eCreditos;
+import static lugosancio_sop_1.LugoSancio_SOP_1.eInicio;
+import static lugosancio_sop_1.LugoSancio_SOP_1.eIntro;
+import static lugosancio_sop_1.LugoSancio_SOP_1.nCierre;
+import static lugosancio_sop_1.LugoSancio_SOP_1.nCreditos;
+import static lugosancio_sop_1.LugoSancio_SOP_1.nInicio;
+import static lugosancio_sop_1.LugoSancio_SOP_1.nIntro;
+import static lugosancio_sop_1.LugoSancio_SOP_1.nPlottwist;
+import static lugosancio_sop_1.LugoSancio_SOP_1.sCierre;
+import static lugosancio_sop_1.LugoSancio_SOP_1.sCreditos;
+import static lugosancio_sop_1.LugoSancio_SOP_1.sInicio;
+import static lugosancio_sop_1.LugoSancio_SOP_1.sIntro;
 
 /**
  *
@@ -30,44 +43,89 @@ public class Ensamblador extends Thread {
         this.nombre = nombre;
         this.duracionDiaEnSegundos = duracionDiaEnSegundos;
     }
-
+    
     @Override
     public void run() {
         try {
-            sem.acquire();
             while (true) {
-                if (Interface.inventarioIntro > 0 && Interface.inventarioCreditos > 0 && Interface.inventarioInicio > 0 && Interface.inventarioCierre > 0 && Interface.inventarioPlottwist > 0) {
-
-                    //TODO: agregar vaina para que cada 5 caps saque uno con plot twist
-                    Interface.inventarioIntro--;
-                    Interface.inventarioCreditos--;
-                    Interface.inventarioInicio--;
-                    Interface.inventarioCierre--;
-                    //agrega plot twist al cap si ya es el quinto cap
-                    if (capitulosListos % 5 == 0) {
-                        Interface.inventarioPlottwist--;
-                    }
-                    System.out.println("El ensamblador ha empezado a crear un capítulo");
-                    //dormir ensamblador dos días para que cree el cap
-                    Thread.sleep(duracionDiaEnSegundos * 2000);
-                    capitulosListos++;
-                    
-                    System.out.println("Capitulo creado exitosamente");
-                    System.out.println("Capitulos listos: " + this.capitulosListos);
-                    
-                } else {
-                    //Cuando no hay caps para crear
-                    System.out.println("No hay caps para crear");
-                    Thread.sleep(duracionDiaEnSegundos * 1000);
+                
+                String nuevoCapitulo = "";
+                String w = "";
+                
+                nIntro.acquire();
+                sIntro.acquire();
+                w = LugoSancio_SOP_1.take(LugoSancio_SOP_1.bIntro,LugoSancio_SOP_1.kIntro,LugoSancio_SOP_1.outIntro);
+                sIntro.release();
+                eIntro.release();
+                nuevoCapitulo += w;
+                
+                nInicio.acquire();
+                sInicio.acquire();
+                w = LugoSancio_SOP_1.take(LugoSancio_SOP_1.bInicio,LugoSancio_SOP_1.kInicio,LugoSancio_SOP_1.outInicio);
+                sInicio.release();
+                eInicio.release();
+                nuevoCapitulo += w;
+                
+                nCierre.acquire();
+                sCierre.acquire();
+                w = LugoSancio_SOP_1.take(LugoSancio_SOP_1.bCierre,LugoSancio_SOP_1.kCierre,LugoSancio_SOP_1.outCierre);
+                sCierre.release();
+                eCierre.release();
+                nuevoCapitulo += w;
+                
+                nCreditos.acquire();
+                sCreditos.acquire();
+                w = LugoSancio_SOP_1.take(LugoSancio_SOP_1.bCreditos,LugoSancio_SOP_1.kCreditos,LugoSancio_SOP_1.outCreditos);
+                sCreditos.release();
+                eCreditos.release();
+                nuevoCapitulo += w;
+                
+                if (capitulosListos % 5 == 4) {
+                    nPlottwist.acquire();
                 }
-                sem.release();
             }
-
         } catch (InterruptedException ex) {
-            Logger.getLogger(Ensamblador.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProductorInicio.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
+
+//    @Override
+//    public void run() {
+//        try {
+//            sem.acquire();
+//            while (true) {
+//                if (Interface.inventarioIntro > 0 && Interface.inventarioCreditos > 0 && Interface.inventarioInicio > 0 && Interface.inventarioCierre > 0 && Interface.inventarioPlottwist > 0) {
+//
+//                    //TODO: agregar vaina para que cada 5 caps saque uno con plot twist
+//                    Interface.inventarioIntro--;
+//                    Interface.inventarioCreditos--;
+//                    Interface.inventarioInicio--;
+//                    Interface.inventarioCierre--;
+//                    //agrega plot twist al cap si ya es el quinto cap
+//                    if (capitulosListos % 5 == 0) {
+//                        Interface.inventarioPlottwist--;
+//                    }
+//                    System.out.println("El ensamblador ha empezado a crear un capítulo");
+//                    //dormir ensamblador dos días para que cree el cap
+//                    Thread.sleep(duracionDiaEnSegundos * 2000);
+//                    capitulosListos++;
+//                    
+//                    System.out.println("Capitulo creado exitosamente");
+//                    System.out.println("Capitulos listos: " + this.capitulosListos);
+//                    
+//                } else {
+//                    //Cuando no hay caps para crear
+//                    System.out.println("No hay caps para crear");
+//                    Thread.sleep(duracionDiaEnSegundos * 1000);
+//                }
+//                sem.release();
+//            }
+//
+//        } catch (InterruptedException ex) {
+//            Logger.getLogger(Ensamblador.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//
+//    }
 
     public void setNumeroDeProductores(int numeroDeProductores) {
         this.numeroDeProductores = numeroDeProductores;
