@@ -8,6 +8,8 @@ package lugosancio_sop_1;
 import Interface.Interface;
 import java.util.concurrent.Semaphore;
 import lugosancio_sop_1.ProductorIntro;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 /**
  *
@@ -30,8 +32,16 @@ public class LugoSancio_SOP_1 {
     public static String[] bPlottwist = new String[kPlottwist];
     
     //in/out
-    public static int in = 0;
-    public static int out = 0;
+    public static int inIntro = 0;
+    public static int outIntro = 0;
+    public static int inCreditos = 0;
+    public static int outCreditos = 0;
+    public static int inInicio = 0;
+    public static int outInicio = 0;
+    public static int inCierre = 0;
+    public static int outCierre = 0;
+    public static int inPlottwist = 0;
+    public static int outPlottwist = 0;
     
     /*
     * s = mutual exclusion in buffer
@@ -55,9 +65,15 @@ public class LugoSancio_SOP_1 {
     public static Semaphore nPlottwist = new Semaphore(0);
     public static Semaphore ePlottwist = new Semaphore(kPlottwist);
     
-    public static void append(String v, String[] b, int k) {
+    public static void append(String v, String[] b, int k, int in) {
         b[in] = v;
         in = (in+1) % k;
+    }
+    
+    public static String take(String[] b, int k, int out) {
+        String w = b[out];
+        out = (out+1) % k;
+        return w;
     }
 
     /**
@@ -74,18 +90,28 @@ public class LugoSancio_SOP_1 {
         ProductorPlottwist tPlottwist = new ProductorPlottwist(sem, 1, "Plot Twist", 1);
         Ensamblador tEnsamblador = new Ensamblador(sem,1,"Ensamblador",1);
 
-        tIntro.start();
+//        try {
+            tIntro.start();
+            tCreditos.start();
+            tInicio.start();
+            tCierre.start();
+            tPlottwist.start();
+//        } catch (InterruptedException ex) {
+//            Logger.getLogger(LugoSancio_SOP_1.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        //tIntro.start();
         //Thread.sleep(1000);
-        tCreditos.start();
+//        tCreditos.start();
+        //Thread.sleep(1000);   
+//        tInicio.start();
         //Thread.sleep(1000);
-        tInicio.start();
+//        tCierre.start();
         //Thread.sleep(1000);
-        tCierre.start();
+//        tPlottwist.start();
         //Thread.sleep(1000);
-        tPlottwist.start();
-        //Thread.sleep(1000);
-        tEnsamblador.start();
-        
+//        tEnsamblador.start();
+        System.out.println("listo");
+        System.out.println(bCierre[0]);
         
 
 

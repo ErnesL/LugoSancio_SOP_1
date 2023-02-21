@@ -9,6 +9,10 @@ import Interface.Interface;
 import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import lugosancio_sop_1.LugoSancio_SOP_1;
+import static lugosancio_sop_1.LugoSancio_SOP_1.sPlottwist;
+import static lugosancio_sop_1.LugoSancio_SOP_1.nPlottwist;
+import static lugosancio_sop_1.LugoSancio_SOP_1.ePlottwist;
 
 /**
  *
@@ -17,9 +21,10 @@ import java.util.logging.Logger;
 public class ProductorPlottwist extends Thread {
 
     int numeroDeProductores = 1;
-    int sueldo = 10;
+    int sueldo = 7;
     int montoPorPagar = 0;
     int duracionDiaEnSegundos;
+    int rendimiento = 1;
     Semaphore sem;
     String nombre;
 
@@ -31,26 +36,37 @@ public class ProductorPlottwist extends Thread {
         this.duracionDiaEnSegundos = duracionDiaEnSegundos;
     }
 
+    String plottwistGenerico = "pero resulta que.... el malo todo este tiempo ha sido Miguel Mouse!\n";
+    
     @Override
     public void run() {
         try {
-            sem.acquire();
-            while (Interface.inventarioPlottwist < Interface.drivePlottwist) {
-                Thread.sleep(duracionDiaEnSegundos*1000);
-                this.montoPorPagar = (int) (this.montoPorPagar + this.sueldo * this.numeroDeProductores);
-                Interface.inventarioPlottwist++;
-                System.out.println("Hay " + Interface.inventarioPlottwist +" "+ this.nombre + " creadas");
-
+            while (true) {
+                //se está creando la plottwist
+                System.out.println("creando plottwist...");
+                sleep(1000/rendimiento);
+                //se revisa si hay espacio en el buffer
+                ePlottwist.acquire();
+                System.out.println("hay espacio en el buffer");
+                //tiene que estar solito en el buffer
+                sPlottwist.acquire();
+                System.out.println("sc enter");
+                //SECCION CRITICA
+                LugoSancio_SOP_1.append(plottwistGenerico,LugoSancio_SOP_1.bPlottwist,LugoSancio_SOP_1.kPlottwist,LugoSancio_SOP_1.inPlottwist);
+                System.out.println("sc exit");
+                //ya salió de la sección crítica
+                sPlottwist.release();
+                //hay un item consumible más en N
+                nPlottwist.release();
+                System.out.println("hay esta cantidad de plottwists: " + nPlottwist.availablePermits());
             }
-            System.out.println(this.nombre + "ya se lleno");
-            System.out.println(this.nombre + "El monto a pagar es: " + this.montoPorPagar);
-            sem.release();
 
         } catch (InterruptedException ex) {
             Logger.getLogger(ProductorPlottwist.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
+
 
     public void setNumeroDeProductores(int numeroDeProductores) {
         this.numeroDeProductores = numeroDeProductores;
@@ -63,6 +79,7 @@ public class ProductorPlottwist extends Thread {
     public void setSueldo(int sueldo) {
         this.sueldo = sueldo;
     }
+
 
     public String getNombre() {
         return nombre;

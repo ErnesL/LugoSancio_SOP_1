@@ -5,10 +5,14 @@
  */
 package lugosancio_sop_1;
 
+import Interface.Interface;
 import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import Interface.Interface;
+import lugosancio_sop_1.LugoSancio_SOP_1;
+import static lugosancio_sop_1.LugoSancio_SOP_1.sCierre;
+import static lugosancio_sop_1.LugoSancio_SOP_1.nCierre;
+import static lugosancio_sop_1.LugoSancio_SOP_1.eCierre;
 
 /**
  *
@@ -20,6 +24,7 @@ public class ProductorCierre extends Thread {
     double sueldo = 7.5;
     int montoPorPagar = 0;
     int duracionDiaEnSegundos;
+    int rendimiento = 1;
     Semaphore sem;
     String nombre;
 
@@ -27,22 +32,55 @@ public class ProductorCierre extends Thread {
         this.numeroDeProductores = numeroProductores;
         this.sem = sem;
         this.nombre = nombre;
+
         this.duracionDiaEnSegundos = duracionDiaEnSegundos;
     }
 
+//    @Override
+//    public void run() {
+//        try {
+//            sem.acquire();
+//            while (Interface.inventarioCierre < Interface.driveCierre) {
+//                Thread.sleep(duracionDiaEnSegundos*1000);
+//                this.montoPorPagar = this.montoPorPagar + this.sueldo * this.numeroDeProductores;
+//                Interface.inventarioCierre++;
+//                System.out.println("Hay " + Interface.inventarioCierre +" "+ this.nombre + " creadas");
+//            }
+//            System.out.println(this.nombre + "ya se lleno");
+//            System.out.println(this.nombre +"El monto a pagar es: " + this.montoPorPagar);
+//            sem.release();
+//            
+//            
+//
+//        } catch (InterruptedException ex) {
+//            Logger.getLogger(ProductorCierre.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//
+//    }
+    String cierreGenerico = "y a la final todos se murieron y nunca se encontró la gema del poder, FIN.\n";
+    
     @Override
     public void run() {
         try {
-            sem.acquire();
-            while (Interface.inventarioCierre < Interface.driveCierre) {
-                Thread.sleep(duracionDiaEnSegundos*1000);
-                this.montoPorPagar = (int) (this.montoPorPagar + this.sueldo * this.numeroDeProductores);
-                Interface.inventarioCierre++;
-                System.out.println("Hay " + Interface.inventarioCierre +" "+ this.nombre + " creadas");
+            while (true) {
+                //se está creando la cierre
+                System.out.println("creando cierre...");
+                sleep(1000/rendimiento);
+                //se revisa si hay espacio en el buffer
+                eCierre.acquire();
+                System.out.println("hay espacio en el buffer");
+                //tiene que estar solito en el buffer
+                sCierre.acquire();
+                System.out.println("sc enter");
+                //SECCION CRITICA
+                LugoSancio_SOP_1.append(cierreGenerico,LugoSancio_SOP_1.bCierre,LugoSancio_SOP_1.kCierre,LugoSancio_SOP_1.inCierre);
+                System.out.println("sc exit");
+                //ya salió de la sección crítica
+                sCierre.release();
+                //hay un item consumible más en N
+                nCierre.release();
+                System.out.println("hay esta cantidad de cierres: " + nCierre.availablePermits());
             }
-            System.out.println(this.nombre + "ya se lleno");
-            System.out.println(this.nombre +"El monto a pagar es: " + this.montoPorPagar);
-            sem.release();
 
         } catch (InterruptedException ex) {
             Logger.getLogger(ProductorCierre.class.getName()).log(Level.SEVERE, null, ex);
@@ -51,13 +89,12 @@ public class ProductorCierre extends Thread {
     }
 
 
-
     public void setNumeroDeProductores(int numeroDeProductores) {
         this.numeroDeProductores = numeroDeProductores;
     }
 
-    public int getSueldo() {
-        return (int) sueldo;
+    public double getSueldo() {
+        return sueldo;
     }
 
     public void setSueldo(int sueldo) {

@@ -9,6 +9,10 @@ import Interface.Interface;
 import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import lugosancio_sop_1.LugoSancio_SOP_1;
+import static lugosancio_sop_1.LugoSancio_SOP_1.sCreditos;
+import static lugosancio_sop_1.LugoSancio_SOP_1.nCreditos;
+import static lugosancio_sop_1.LugoSancio_SOP_1.eCreditos;
 
 /**
  *
@@ -20,6 +24,7 @@ public class ProductorCreditos extends Thread {
     int sueldo = 3;
     int montoPorPagar = 0;
     int duracionDiaEnSegundos;
+    int rendimiento = 1;
     Semaphore sem;
     String nombre;
 
@@ -27,28 +32,41 @@ public class ProductorCreditos extends Thread {
         this.numeroDeProductores = numeroProductores;
         this.sem = sem;
         this.nombre = nombre;
+
         this.duracionDiaEnSegundos = duracionDiaEnSegundos;
     }
 
+    String creditosGenerico = "\nDIRECTED BY:\nSatteo Mancio\nLugesto Erno\n\nACKNOWLEDGEMENTS:\nGebrayel Inatti\nStackOverflow\nw3schools\nla chica leyendo esto <3\n\n";
+    
     @Override
     public void run() {
         try {
-            sem.acquire();
-            while (Interface.inventarioCreditos < Interface.driveCreditos) {
-                Thread.sleep(duracionDiaEnSegundos*1000);
-                this.montoPorPagar = (int) (this.montoPorPagar + this.sueldo * this.numeroDeProductores);
-                Interface.inventarioCreditos++;
-                System.out.println("Hay " + Interface.inventarioCreditos +" "+ this.nombre + " creadas");
+            while (true) {
+                //se está creando la creditos
+                System.out.println("creando creditos...");
+                sleep(1000/rendimiento);
+                //se revisa si hay espacio en el buffer
+                eCreditos.acquire();
+                System.out.println("hay espacio en el buffer");
+                //tiene que estar solito en el buffer
+                sCreditos.acquire();
+                System.out.println("sc enter");
+                //SECCION CRITICA
+                LugoSancio_SOP_1.append(creditosGenerico,LugoSancio_SOP_1.bCreditos,LugoSancio_SOP_1.kCreditos,LugoSancio_SOP_1.inCreditos);
+                System.out.println("sc exit");
+                //ya salió de la sección crítica
+                sCreditos.release();
+                //hay un item consumible más en N
+                nCreditos.release();
+                System.out.println("hay esta cantidad de creditos: " + nCreditos.availablePermits());
             }
-            System.out.println(this.nombre + "ya se lleno");
-            System.out.println(this.nombre +"El monto a pagar es: " + this.montoPorPagar);
-            sem.release();
 
         } catch (InterruptedException ex) {
             Logger.getLogger(ProductorCreditos.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
+
 
     public void setNumeroDeProductores(int numeroDeProductores) {
         this.numeroDeProductores = numeroDeProductores;
@@ -61,6 +79,7 @@ public class ProductorCreditos extends Thread {
     public void setSueldo(int sueldo) {
         this.sueldo = sueldo;
     }
+
 
     public String getNombre() {
         return nombre;
