@@ -57,29 +57,26 @@ public class ProductorIntro extends Thread {
 //        }
 //
 //    }
-    String introGenerica = "oshiete oshiete watashi wa arigato gosaimasu\nATTACK ON TITAN TEMPORADA 4.5 PARTE 2 LADO A v1 (copy)\nDirigida por Satteo Mancio y Lugesto Erno\n";
+    String introGenerica = "\noshiete oshiete watashi wa arigato gosaimasu\nATTACK ON TITAN TEMPORADA 4.5 PARTE 2 LADO A v1 (copy)\nDirigida por Satteo Mancio y Lugesto Erno\n";
     
     @Override
     public void run() {
         try {
             while (true) {
                 //se está creando la intro
-                System.out.println("creando intro...");
                 sleep(1000/rendimiento);
                 //se revisa si hay espacio en el buffer
                 eIntro.acquire();
-                System.out.println("hay espacio en el buffer");
                 //tiene que estar solito en el buffer
                 sIntro.acquire();
-                System.out.println("sc enter");
                 //SECCION CRITICA
                 LugoSancio_SOP_1.append(introGenerica,LugoSancio_SOP_1.bIntro,LugoSancio_SOP_1.kIntro,LugoSancio_SOP_1.inIntro);
-                System.out.println("sc exit");
                 //ya salió de la sección crítica
                 sIntro.release();
                 //hay un item consumible más en N
                 nIntro.release();
                 System.out.println("hay esta cantidad de intros: " + nIntro.availablePermits());
+
             }
 
         } catch (InterruptedException ex) {

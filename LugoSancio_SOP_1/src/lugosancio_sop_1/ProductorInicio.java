@@ -43,17 +43,13 @@ public class ProductorInicio extends Thread {
         try {
             while (true) {
                 //se está creando la inicio
-                System.out.println("creando inicio...");
                 sleep(1000/rendimiento);
                 //se revisa si hay espacio en el buffer
                 eInicio.acquire();
-                System.out.println("hay espacio en el buffer");
                 //tiene que estar solito en el buffer
                 sInicio.acquire();
-                System.out.println("sc enter");
                 //SECCION CRITICA
                 LugoSancio_SOP_1.append(inicioGenerico,LugoSancio_SOP_1.bInicio,LugoSancio_SOP_1.kInicio,LugoSancio_SOP_1.inInicio);
-                System.out.println("sc exit");
                 //ya salió de la sección crítica
                 sInicio.release();
                 //hay un item consumible más en N

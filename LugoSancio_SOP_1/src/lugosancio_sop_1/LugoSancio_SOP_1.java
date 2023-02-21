@@ -96,6 +96,7 @@ public class LugoSancio_SOP_1 {
             tInicio.start();
             tCierre.start();
             tPlottwist.start();
+            tEnsamblador.start();
 //        } catch (InterruptedException ex) {
 //            Logger.getLogger(LugoSancio_SOP_1.class.getName()).log(Level.SEVERE, null, ex);
 //        }
@@ -110,8 +111,6 @@ public class LugoSancio_SOP_1 {
 //        tPlottwist.start();
         //Thread.sleep(1000);
 //        tEnsamblador.start();
-        System.out.println("listo");
-        System.out.println(bCierre[0]);
         
 
 

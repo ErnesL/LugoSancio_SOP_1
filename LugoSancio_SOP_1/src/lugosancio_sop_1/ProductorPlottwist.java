@@ -43,17 +43,13 @@ public class ProductorPlottwist extends Thread {
         try {
             while (true) {
                 //se está creando la plottwist
-                System.out.println("creando plottwist...");
                 sleep(1000/rendimiento);
                 //se revisa si hay espacio en el buffer
                 ePlottwist.acquire();
-                System.out.println("hay espacio en el buffer");
                 //tiene que estar solito en el buffer
                 sPlottwist.acquire();
-                System.out.println("sc enter");
                 //SECCION CRITICA
                 LugoSancio_SOP_1.append(plottwistGenerico,LugoSancio_SOP_1.bPlottwist,LugoSancio_SOP_1.kPlottwist,LugoSancio_SOP_1.inPlottwist);
-                System.out.println("sc exit");
                 //ya salió de la sección crítica
                 sPlottwist.release();
                 //hay un item consumible más en N

@@ -43,17 +43,13 @@ public class ProductorCreditos extends Thread {
         try {
             while (true) {
                 //se está creando la creditos
-                System.out.println("creando creditos...");
                 sleep(1000/rendimiento);
                 //se revisa si hay espacio en el buffer
                 eCreditos.acquire();
-                System.out.println("hay espacio en el buffer");
                 //tiene que estar solito en el buffer
                 sCreditos.acquire();
-                System.out.println("sc enter");
                 //SECCION CRITICA
                 LugoSancio_SOP_1.append(creditosGenerico,LugoSancio_SOP_1.bCreditos,LugoSancio_SOP_1.kCreditos,LugoSancio_SOP_1.inCreditos);
-                System.out.println("sc exit");
                 //ya salió de la sección crítica
                 sCreditos.release();
                 //hay un item consumible más en N

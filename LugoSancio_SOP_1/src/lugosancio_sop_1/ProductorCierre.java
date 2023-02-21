@@ -64,17 +64,13 @@ public class ProductorCierre extends Thread {
         try {
             while (true) {
                 //se está creando la cierre
-                System.out.println("creando cierre...");
                 sleep(1000/rendimiento);
                 //se revisa si hay espacio en el buffer
                 eCierre.acquire();
-                System.out.println("hay espacio en el buffer");
                 //tiene que estar solito en el buffer
                 sCierre.acquire();
-                System.out.println("sc enter");
                 //SECCION CRITICA
                 LugoSancio_SOP_1.append(cierreGenerico,LugoSancio_SOP_1.bCierre,LugoSancio_SOP_1.kCierre,LugoSancio_SOP_1.inCierre);
-                System.out.println("sc exit");
                 //ya salió de la sección crítica
                 sCierre.release();
                 //hay un item consumible más en N

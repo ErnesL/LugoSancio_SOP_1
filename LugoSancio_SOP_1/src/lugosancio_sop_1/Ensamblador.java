@@ -13,6 +13,7 @@ import static lugosancio_sop_1.LugoSancio_SOP_1.eCierre;
 import static lugosancio_sop_1.LugoSancio_SOP_1.eCreditos;
 import static lugosancio_sop_1.LugoSancio_SOP_1.eInicio;
 import static lugosancio_sop_1.LugoSancio_SOP_1.eIntro;
+import static lugosancio_sop_1.LugoSancio_SOP_1.ePlottwist;
 import static lugosancio_sop_1.LugoSancio_SOP_1.nCierre;
 import static lugosancio_sop_1.LugoSancio_SOP_1.nCreditos;
 import static lugosancio_sop_1.LugoSancio_SOP_1.nInicio;
@@ -22,6 +23,7 @@ import static lugosancio_sop_1.LugoSancio_SOP_1.sCierre;
 import static lugosancio_sop_1.LugoSancio_SOP_1.sCreditos;
 import static lugosancio_sop_1.LugoSancio_SOP_1.sInicio;
 import static lugosancio_sop_1.LugoSancio_SOP_1.sIntro;
+import static lugosancio_sop_1.LugoSancio_SOP_1.sPlottwist;
 
 /**
  *
@@ -57,32 +59,43 @@ public class Ensamblador extends Thread {
                 w = LugoSancio_SOP_1.take(LugoSancio_SOP_1.bIntro,LugoSancio_SOP_1.kIntro,LugoSancio_SOP_1.outIntro);
                 sIntro.release();
                 eIntro.release();
-                nuevoCapitulo += w;
+                nuevoCapitulo = nuevoCapitulo.concat(w);
                 
                 nInicio.acquire();
                 sInicio.acquire();
                 w = LugoSancio_SOP_1.take(LugoSancio_SOP_1.bInicio,LugoSancio_SOP_1.kInicio,LugoSancio_SOP_1.outInicio);
                 sInicio.release();
                 eInicio.release();
-                nuevoCapitulo += w;
+                nuevoCapitulo = nuevoCapitulo.concat(w);
                 
                 nCierre.acquire();
                 sCierre.acquire();
                 w = LugoSancio_SOP_1.take(LugoSancio_SOP_1.bCierre,LugoSancio_SOP_1.kCierre,LugoSancio_SOP_1.outCierre);
                 sCierre.release();
                 eCierre.release();
-                nuevoCapitulo += w;
+                nuevoCapitulo = nuevoCapitulo.concat(w);
                 
                 nCreditos.acquire();
                 sCreditos.acquire();
                 w = LugoSancio_SOP_1.take(LugoSancio_SOP_1.bCreditos,LugoSancio_SOP_1.kCreditos,LugoSancio_SOP_1.outCreditos);
                 sCreditos.release();
                 eCreditos.release();
-                nuevoCapitulo += w;
+                nuevoCapitulo = nuevoCapitulo.concat(w);
                 
                 if (capitulosListos % 5 == 4) {
                     nPlottwist.acquire();
+                    sPlottwist.acquire();
+                    w = LugoSancio_SOP_1.take(LugoSancio_SOP_1.bPlottwist,LugoSancio_SOP_1.kPlottwist,LugoSancio_SOP_1.outPlottwist);
+                    sPlottwist.release();
+                    ePlottwist.release();
+                    nuevoCapitulo = nuevoCapitulo.concat(w);
                 }
+                //dormir ensamblador dos días para que cree el cap
+                Thread.sleep(duracionDiaEnSegundos * 2000);
+                capitulosListos++;
+                
+                System.out.println(nuevoCapitulo);
+                System.out.println("Capitulos listos: " + this.capitulosListos);
             }
         } catch (InterruptedException ex) {
             Logger.getLogger(ProductorInicio.class.getName()).log(Level.SEVERE, null, ex);
