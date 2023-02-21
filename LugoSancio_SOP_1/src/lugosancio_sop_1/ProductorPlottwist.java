@@ -43,7 +43,7 @@ public class ProductorPlottwist extends Thread {
         try {
             while (true) {
                 //se está creando la plottwist
-                sleep(1000/rendimiento);
+                sleep(1000/numeroDeProductores);
                 //se revisa si hay espacio en el buffer
                 ePlottwist.acquire();
                 //tiene que estar solito en el buffer

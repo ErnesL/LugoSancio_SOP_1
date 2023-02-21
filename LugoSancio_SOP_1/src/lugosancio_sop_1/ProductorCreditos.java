@@ -43,7 +43,7 @@ public class ProductorCreditos extends Thread {
         try {
             while (true) {
                 //se está creando la creditos
-                sleep(1000/rendimiento);
+                sleep(1000/numeroDeProductores);
                 //se revisa si hay espacio en el buffer
                 eCreditos.acquire();
                 //tiene que estar solito en el buffer

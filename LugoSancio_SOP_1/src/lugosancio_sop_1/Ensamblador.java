@@ -54,6 +54,7 @@ public class Ensamblador extends Thread {
                 String nuevoCapitulo = "";
                 String w = "";
                 
+                //INTRO
                 nIntro.acquire();
                 sIntro.acquire();
                 w = LugoSancio_SOP_1.take(LugoSancio_SOP_1.bIntro,LugoSancio_SOP_1.kIntro,LugoSancio_SOP_1.outIntro);
@@ -61,6 +62,7 @@ public class Ensamblador extends Thread {
                 eIntro.release();
                 nuevoCapitulo = nuevoCapitulo.concat(w);
                 
+                //INICIO
                 nInicio.acquire();
                 sInicio.acquire();
                 w = LugoSancio_SOP_1.take(LugoSancio_SOP_1.bInicio,LugoSancio_SOP_1.kInicio,LugoSancio_SOP_1.outInicio);
@@ -68,20 +70,7 @@ public class Ensamblador extends Thread {
                 eInicio.release();
                 nuevoCapitulo = nuevoCapitulo.concat(w);
                 
-                nCierre.acquire();
-                sCierre.acquire();
-                w = LugoSancio_SOP_1.take(LugoSancio_SOP_1.bCierre,LugoSancio_SOP_1.kCierre,LugoSancio_SOP_1.outCierre);
-                sCierre.release();
-                eCierre.release();
-                nuevoCapitulo = nuevoCapitulo.concat(w);
-                
-                nCreditos.acquire();
-                sCreditos.acquire();
-                w = LugoSancio_SOP_1.take(LugoSancio_SOP_1.bCreditos,LugoSancio_SOP_1.kCreditos,LugoSancio_SOP_1.outCreditos);
-                sCreditos.release();
-                eCreditos.release();
-                nuevoCapitulo = nuevoCapitulo.concat(w);
-                
+                //PLOT TWIST
                 if (capitulosListos % 5 == 4) {
                     nPlottwist.acquire();
                     sPlottwist.acquire();
@@ -90,6 +79,23 @@ public class Ensamblador extends Thread {
                     ePlottwist.release();
                     nuevoCapitulo = nuevoCapitulo.concat(w);
                 }
+                
+                //CIERRE
+                nCierre.acquire();
+                sCierre.acquire();
+                w = LugoSancio_SOP_1.take(LugoSancio_SOP_1.bCierre,LugoSancio_SOP_1.kCierre,LugoSancio_SOP_1.outCierre);
+                sCierre.release();
+                eCierre.release();
+                nuevoCapitulo = nuevoCapitulo.concat(w);
+                
+                //CREDITOS
+                nCreditos.acquire();
+                sCreditos.acquire();
+                w = LugoSancio_SOP_1.take(LugoSancio_SOP_1.bCreditos,LugoSancio_SOP_1.kCreditos,LugoSancio_SOP_1.outCreditos);
+                sCreditos.release();
+                eCreditos.release();
+                nuevoCapitulo = nuevoCapitulo.concat(w);
+                
                 //dormir ensamblador dos días para que cree el cap
                 Thread.sleep(duracionDiaEnSegundos * 2000);
                 capitulosListos++;

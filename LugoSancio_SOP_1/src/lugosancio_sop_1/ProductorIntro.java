@@ -64,7 +64,7 @@ public class ProductorIntro extends Thread {
         try {
             while (true) {
                 //se está creando la intro
-                sleep(1000/rendimiento);
+                sleep(1000/numeroDeProductores);
                 //se revisa si hay espacio en el buffer
                 eIntro.acquire();
                 //tiene que estar solito en el buffer
