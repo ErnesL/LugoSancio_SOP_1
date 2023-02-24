@@ -58,6 +58,7 @@ public class Ensamblador extends Thread {
                 nIntro.acquire();
                 sIntro.acquire();
                 w = LugoSancio_SOP_1.take(LugoSancio_SOP_1.bIntro,LugoSancio_SOP_1.kIntro,LugoSancio_SOP_1.outIntro);
+                LugoSancio_SOP_1.outIntro = (LugoSancio_SOP_1.outIntro+1)%LugoSancio_SOP_1.kIntro;
                 sIntro.release();
                 eIntro.release();
                 nuevoCapitulo = nuevoCapitulo.concat(w);
@@ -66,6 +67,7 @@ public class Ensamblador extends Thread {
                 nInicio.acquire();
                 sInicio.acquire();
                 w = LugoSancio_SOP_1.take(LugoSancio_SOP_1.bInicio,LugoSancio_SOP_1.kInicio,LugoSancio_SOP_1.outInicio);
+                LugoSancio_SOP_1.outInicio = (LugoSancio_SOP_1.outInicio+1)%LugoSancio_SOP_1.kInicio;
                 sInicio.release();
                 eInicio.release();
                 nuevoCapitulo = nuevoCapitulo.concat(w);
@@ -75,6 +77,7 @@ public class Ensamblador extends Thread {
                     nPlottwist.acquire();
                     sPlottwist.acquire();
                     w = LugoSancio_SOP_1.take(LugoSancio_SOP_1.bPlottwist,LugoSancio_SOP_1.kPlottwist,LugoSancio_SOP_1.outPlottwist);
+                    LugoSancio_SOP_1.outPlottwist = (LugoSancio_SOP_1.outPlottwist+1)%LugoSancio_SOP_1.kPlottwist;
                     sPlottwist.release();
                     ePlottwist.release();
                     nuevoCapitulo = nuevoCapitulo.concat(w);
@@ -84,6 +87,7 @@ public class Ensamblador extends Thread {
                 nCierre.acquire();
                 sCierre.acquire();
                 w = LugoSancio_SOP_1.take(LugoSancio_SOP_1.bCierre,LugoSancio_SOP_1.kCierre,LugoSancio_SOP_1.outCierre);
+                LugoSancio_SOP_1.outCierre = (LugoSancio_SOP_1.outCierre+1)%LugoSancio_SOP_1.kCierre;
                 sCierre.release();
                 eCierre.release();
                 nuevoCapitulo = nuevoCapitulo.concat(w);
@@ -92,6 +96,7 @@ public class Ensamblador extends Thread {
                 nCreditos.acquire();
                 sCreditos.acquire();
                 w = LugoSancio_SOP_1.take(LugoSancio_SOP_1.bCreditos,LugoSancio_SOP_1.kCreditos,LugoSancio_SOP_1.outCreditos);
+                LugoSancio_SOP_1.outCreditos = (LugoSancio_SOP_1.outCreditos+1)%LugoSancio_SOP_1.kCreditos;
                 sCreditos.release();
                 eCreditos.release();
                 nuevoCapitulo = nuevoCapitulo.concat(w);

@@ -64,25 +64,34 @@ public class LugoSancio_SOP_1 {
     public static Semaphore sPlottwist = new Semaphore(1);
     public static Semaphore nPlottwist = new Semaphore(0);
     public static Semaphore ePlottwist = new Semaphore(kPlottwist);
+    public static Semaphore sCountdown = new Semaphore(1);
     
-    public static void append(String v, String[] b, int k, int in) {
+    public static int append(String v, String[] b, int k, int in) {
         b[in] = v;
         in = (in+1) % k;
+        return in;
     }
     
     public static String take(String[] b, int k, int out) {
         String w = b[out];
-        out = (out+1) % k;
         return w;
     }
 
+    public static void reduce() {
+        //Thread.sleep((numDeCedula+1)*1000/24);
+        //diasRestantes--;
+    }
+    
+    public static void checkOnPM() {
+        //TODO
+    }
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) throws InterruptedException {
         Semaphore sem = new Semaphore(6);
         
-
+        
         ProductorIntro tIntro = new ProductorIntro(sem, 1, "Intro", 1);
         ProductorCreditos tCreditos = new ProductorCreditos(sem, 1, "Creditos", 1);
         ProductorInicio tInicio = new ProductorInicio(sem, 1, "Inicio", 1);
