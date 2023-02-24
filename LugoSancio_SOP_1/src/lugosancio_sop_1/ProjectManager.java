@@ -22,7 +22,7 @@ public class ProjectManager extends Thread {
     boolean seAcaboElDia;
     int duracionDiaEnSegundos;
     
-    public static Semaphore sem = new Semaphore(0);
+    Semaphore sem = new Semaphore(0);
     
     public class Hilo extends Thread {
         
@@ -63,6 +63,7 @@ public class ProjectManager extends Thread {
                     estaViendoRM = !estaViendoRM;
                     Thread.sleep((15+numDeCedula)*1000/1440);
                     }
+                System.out.println("uno x dia PM");
                 }
         } catch (InterruptedException ex) {
             Logger.getLogger(ProductorInicio.class.getName()).log(Level.SEVERE, null, ex);

@@ -88,7 +88,8 @@ public class Interface extends javax.swing.JFrame {
     
     //Inicializando PM y Director
     ProjectManager tPM = new ProjectManager(cantidadDeDiasEntreLanzamientos,4,1);
-
+    Director tDirector = new Director(cantidadDeDiasEntreLanzamientos,1);
+    
     //RICK&MORTY
     //Buffers para RM
     public static String[] bIntroRM;
@@ -1683,6 +1684,7 @@ public class Interface extends javax.swing.JFrame {
         tEnsambladorRM.start();
 
         tPM.start();
+        tDirector.start();
 
     }//GEN-LAST:event_startActionPerformed
 
