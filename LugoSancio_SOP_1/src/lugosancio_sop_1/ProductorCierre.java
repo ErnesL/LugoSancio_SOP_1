@@ -10,7 +10,6 @@ import static lugosancio_sop_1.Interface.eCierre;
 import static lugosancio_sop_1.Interface.nCierre;
 import static lugosancio_sop_1.Interface.sCierre;
 
-import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextField;
@@ -23,7 +22,7 @@ import lugosancio_sop_1.LugoSancio_SOP_1;
 public class ProductorCierre extends Thread {
 
     int numeroDeProductores = 1;
-    double sueldo = 7.5;
+    int sueldo = 8;
     int montoPorPagar = 0;
     int duracionDiaEnSegundos;
     int rendimiento = 1;
@@ -55,8 +54,8 @@ public class ProductorCierre extends Thread {
                 sCierre.release();
                 //hay un item consumible más en N
                 nCierre.release();
-                System.out.println("hay esta cantidad de cierres: " + nCierre.availablePermits());
                 textField.setText(Integer.toString(nCierre.availablePermits()));
+                montoPorPagar = montoPorPagar + sueldo*24;
             }
 
         } catch (InterruptedException ex) {

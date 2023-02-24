@@ -8,7 +8,6 @@ package lugosancio_sop_1;
 import static lugosancio_sop_1.Interface.eIntro;
 import static lugosancio_sop_1.Interface.nIntro;
 import static lugosancio_sop_1.Interface.sIntro;
-import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextField;
@@ -53,8 +52,8 @@ public class ProductorIntro extends Thread {
                 sIntro.release();
                 //hay un item consumible más en N
                 nIntro.release();
-                System.out.println("hay esta cantidad de intros: " + nIntro.availablePermits());
                 textField.setText(Integer.toString(nIntro.availablePermits()));
+                montoPorPagar = montoPorPagar + sueldo * 24;
 
             }
 

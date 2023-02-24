@@ -8,7 +8,6 @@ package lugosancio_sop_1;
 import static lugosancio_sop_1.Interface.ePlottwist;
 import static lugosancio_sop_1.Interface.nPlottwist;
 import static lugosancio_sop_1.Interface.sPlottwist;
-import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextField;
@@ -30,9 +29,7 @@ public class ProductorPlottwist extends Thread {
 
     public ProductorPlottwist(int numeroProductores, String nombre, int duracionDiaEnSegundos) {
         this.numeroDeProductores = numeroProductores;
-
         this.nombre = nombre;
-
         this.duracionDiaEnSegundos = duracionDiaEnSegundos;
     }
 
@@ -54,8 +51,8 @@ public class ProductorPlottwist extends Thread {
                 sPlottwist.release();
                 //hay un item consumible más en N
                 nPlottwist.release();
-                System.out.println("hay esta cantidad de plottwists: " + nPlottwist.availablePermits());
                 textField.setText(Integer.toString(nPlottwist.availablePermits()));
+                montoPorPagar = montoPorPagar + sueldo * 24;
             }
 
         } catch (InterruptedException ex) {

@@ -5,9 +5,10 @@
  */
 package lugosancio_sop_1;
 
-import java.util.concurrent.Semaphore;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JTextField;
 import static lugosancio_sop_1.Interface.eCierre;
 import static lugosancio_sop_1.Interface.eCreditos;
 import static lugosancio_sop_1.Interface.eInicio;
@@ -36,6 +37,7 @@ public class Ensamblador extends Thread {
     int montoPorPagar = 0;
     int duracionDiaEnSegundos;
     int cantidadDeDiasEntreLanzamientos;
+    JTextField textField;
 
     String nombre;
 
@@ -103,15 +105,22 @@ public class Ensamblador extends Thread {
                 //dormir ensamblador dos días para que cree el cap
                 Thread.sleep(duracionDiaEnSegundos * 2000);
                 capitulosListos++;
+                textField.setText(Integer.toString(capitulosListos));
+                montoPorPagar = montoPorPagar + sueldo*numeroDeProductores;
 
-                System.out.println(nuevoCapitulo);
-                System.out.println("Capitulos listos: " + this.capitulosListos);
             }
         } catch (InterruptedException ex) {
             Logger.getLogger(ProductorInicio.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
+    public void setTextField(JTextField textField) {
+        this.textField = textField;
+    }
+
+    
+    
+    
     public void setNumeroDeProductores(int numeroDeProductores) {
         this.numeroDeProductores = numeroDeProductores;
     }

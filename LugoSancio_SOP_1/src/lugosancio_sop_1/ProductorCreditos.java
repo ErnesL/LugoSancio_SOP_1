@@ -8,7 +8,6 @@ package lugosancio_sop_1;
 import static lugosancio_sop_1.Interface.eCreditos;
 import static lugosancio_sop_1.Interface.nCreditos;
 import static lugosancio_sop_1.Interface.sCreditos;
-import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextField;
@@ -31,9 +30,8 @@ public class ProductorCreditos extends Thread {
 
     public ProductorCreditos( int numeroProductores, String nombre, int duracionDiaEnSegundos) {
         this.numeroDeProductores = numeroProductores;
-    
+  
         this.nombre = nombre;
-
         this.duracionDiaEnSegundos = duracionDiaEnSegundos;
     }
 
@@ -55,8 +53,8 @@ public class ProductorCreditos extends Thread {
                 sCreditos.release();
                 //hay un item consumible más en N
                 nCreditos.release();
-                System.out.println("hay esta cantidad de creditos: " + nCreditos.availablePermits());
                 textField.setText(Integer.toString(nCreditos.availablePermits()));
+                montoPorPagar = montoPorPagar + sueldo*24;
             }
 
         } catch (InterruptedException ex) {
