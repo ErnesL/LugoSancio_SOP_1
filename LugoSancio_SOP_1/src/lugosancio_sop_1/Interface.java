@@ -33,12 +33,19 @@ public class Interface extends javax.swing.JFrame {
     int cantidadDeDiasEntreLanzamientos = 20;
     static int dias = 0;
 
-    //Drive
+    //Drive para Velma
     public static int driveIntro = 30;
     public static int driveCreditos = 25;
     public static int driveInicio = 50;
     public static int driveCierre = 55;
     public static int drivePlottwist = 40;
+    
+    //Drive para RM
+    public static int driveIntroRM = 30;
+    public static int driveCreditosRM = 25;
+    public static int driveInicioRM = 50;
+    public static int driveCierreRM = 55;
+    public static int drivePlottwistRM = 40;
 
     //Buffers para Velma
     public static String[] bIntro;
@@ -152,7 +159,7 @@ public class Interface extends javax.swing.JFrame {
             //Dias
             duracionDiaEnSegundos = Integer.parseInt(dataSplit[0]);
             cantidadDeDiasEntreLanzamientos = Integer.parseInt(dataSplit[1]);
-
+            
             //Productores
             velmaIntro.setText(productoresSplit[0]);
             velmaCreditos.setText(productoresSplit[1]);
@@ -185,12 +192,19 @@ public class Interface extends javax.swing.JFrame {
             rmEnsambladores.setText(dataSplit[4]);
             tEnsambladorRM.setNumeroDeProductores(Integer.parseInt(rmEnsambladores.getText()));
             
-            //Drive
+            //Drive para Velma
             driveIntro = Integer.parseInt(almacenamientoSplit[0]);
             driveCreditos = Integer.parseInt(almacenamientoSplit[1]);
             driveInicio = Integer.parseInt(almacenamientoSplit[2]);
             driveCierre = Integer.parseInt(almacenamientoSplit[3]);
             drivePlottwist = Integer.parseInt(almacenamientoSplit[4]);
+            
+            //Drive para RM
+            driveIntroRM = Integer.parseInt(almacenamientoSplit[0]);
+            driveCreditosRM = Integer.parseInt(almacenamientoSplit[1]);
+            driveInicioRM = Integer.parseInt(almacenamientoSplit[2]);
+            driveCierreRM = Integer.parseInt(almacenamientoSplit[3]);
+            drivePlottwistRM = Integer.parseInt(almacenamientoSplit[4]);
 
             //Buffers
             bIntro = new String[driveIntro];
@@ -211,11 +225,11 @@ public class Interface extends javax.swing.JFrame {
             eCierre = new Semaphore(driveCierre);
             ePlottwist = new Semaphore(drivePlottwist);
 
-            eIntroRM = new Semaphore(driveIntro);
-            eCreditosRM = new Semaphore(driveCreditos);
-            eInicioRM = new Semaphore(driveInicio);
-            eCierreRM = new Semaphore(driveCierre);
-            ePlottwistRM = new Semaphore(drivePlottwist);
+            eIntroRM = new Semaphore(driveIntroRM);
+            eCreditosRM = new Semaphore(driveCreditosRM);
+            eInicioRM = new Semaphore(driveInicioRM);
+            eCierreRM = new Semaphore(driveCierreRM);
+            ePlottwistRM = new Semaphore(drivePlottwistRM);
 
             //Inventario maximo 
             velmaInventarioIntroMaximo.setText(Integer.toString(driveIntro));
@@ -224,11 +238,11 @@ public class Interface extends javax.swing.JFrame {
             velmaInventarioCierreMaximo.setText(Integer.toString(driveCierre));
             velmaInventarioPlottwistMaximo.setText(Integer.toString(drivePlottwist));
 
-            rmInventarioIntroMaximo.setText(Integer.toString(driveIntro));
-            rmInventarioCreditosMaximo.setText(Integer.toString(driveCreditos));
-            rmInventarioInicioMaximo.setText(Integer.toString(driveInicio));
-            rmInventarioCierreMaximo.setText(Integer.toString(driveCierre));
-            rmInventarioPlottwistMaximo.setText(Integer.toString(drivePlottwist));
+            rmInventarioIntroMaximo.setText(Integer.toString(driveIntroRM));
+            rmInventarioCreditosMaximo.setText(Integer.toString(driveCreditosRM));
+            rmInventarioInicioMaximo.setText(Integer.toString(driveInicioRM));
+            rmInventarioCierreMaximo.setText(Integer.toString(driveCierreRM));
+            rmInventarioPlottwistMaximo.setText(Integer.toString(drivePlottwistRM));
 
             //InventarioDisponible
             velmaInventarioIntroDisponible.setText(Integer.toString(nIntro.availablePermits()));
@@ -524,7 +538,7 @@ public class Interface extends javax.swing.JFrame {
         jPanel1.add(rmCierre, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 180, 40, -1));
 
         jLabel16.setText("CANTIDAD DE ENSAMBLADORES");
-        jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 370, -1, -1));
+        jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 370, -1, -1));
 
         jLabel17.setText("1. INTRO");
         jPanel1.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 260, -1, -1));
@@ -662,7 +676,7 @@ public class Interface extends javax.swing.JFrame {
         jPanel1.add(velmaInventarioPlottwistDisponible, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 340, 40, -1));
 
         jLabel29.setText("CANTIDAD DE CAPS TERMINADOS");
-        jPanel1.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 400, -1, -1));
+        jPanel1.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 400, -1, -1));
 
         velmoCapsAcabadosEnUltimoLote.setEditable(false);
         velmoCapsAcabadosEnUltimoLote.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -674,7 +688,7 @@ public class Interface extends javax.swing.JFrame {
         jPanel1.add(velmoCapsAcabadosEnUltimoLote, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 610, 40, -1));
 
         jLabel30.setText("CANTIDAD DE ENSAMBLADORES");
-        jPanel1.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 370, -1, -1));
+        jPanel1.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 370, -1, -1));
 
         rmEnsambladores.setEditable(false);
         rmEnsambladores.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -686,7 +700,7 @@ public class Interface extends javax.swing.JFrame {
         jPanel1.add(rmEnsambladores, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 370, 40, -1));
 
         jLabel31.setText("CANTIDAD DE CAPS TERMINADOS");
-        jPanel1.add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 400, -1, -1));
+        jPanel1.add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 400, -1, -1));
 
         rmCaps.setEditable(false);
         rmCaps.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -788,7 +802,7 @@ public class Interface extends javax.swing.JFrame {
         jPanel1.add(jLabel40, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 570, -1, -1));
 
         jLabel41.setText("DEADLINE (DIAS)");
-        jPanel1.add(jLabel41, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 430, -1, -1));
+        jPanel1.add(jLabel41, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 430, 80, -1));
 
         velmaDeadline.setEditable(false);
         velmaDeadline.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -890,7 +904,7 @@ public class Interface extends javax.swing.JFrame {
         jPanel1.add(jLabel50, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 570, -1, -1));
 
         jLabel51.setText("DEADLINE (DIAS)");
-        jPanel1.add(jLabel51, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 430, -1, -1));
+        jPanel1.add(jLabel51, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 430, -1, -1));
 
         rmDeadline.setEditable(false);
         rmDeadline.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -1668,6 +1682,13 @@ public class Interface extends javax.swing.JFrame {
         
         tEnsamblador.setTextField(velmaCaps);
         tEnsambladorRM.setTextField(rmCaps);
+        
+        tPM.setVelmaDeadline(velmaDeadline);
+        tPM.setRmDeadline(rmDeadline);
+        
+        tDirector.setActividadDR(velmaDirectorActividad);
+        
+        
 
         tIntro.start();
         tCreditos.start();

@@ -8,6 +8,7 @@ package lugosancio_sop_1;
 import java.util.concurrent.Semaphore;
 import java.util.logging.Logger;
 import java.util.logging.Level;
+import javax.swing.JTextField;
 import static lugosancio_sop_1.Interface.sCountdown;
 
 /**
@@ -21,6 +22,9 @@ public class ProjectManager extends Thread {
     int numDeCedula;
     boolean seAcaboElDia;
     int duracionDiaEnSegundos;
+    JTextField velmaDeadline;
+    JTextField rmDeadline;
+    JTextField actividad;
     
     Semaphore sem = new Semaphore(0);
     
@@ -58,6 +62,8 @@ public class ProjectManager extends Thread {
                 seAcaboElDia = false;
                 sCountdown.acquire();
                 diasRestantes--;
+                velmaDeadline.setText(Integer.toString(diasRestantes));
+                rmDeadline.setText(Integer.toString(diasRestantes));
                 sCountdown.release();
                 while (!seAcaboElDia) {
                     estaViendoRM = !estaViendoRM;
@@ -69,5 +75,18 @@ public class ProjectManager extends Thread {
             Logger.getLogger(ProductorInicio.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public void setVelmaDeadline(JTextField velmaDeadline) {
+        this.velmaDeadline = velmaDeadline;
+    }
+
+    public void setRmDeadline(JTextField rmDeadline) {
+        this.rmDeadline = rmDeadline;
+    }
+    
+    
+    
+    
+    
     
 }

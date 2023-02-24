@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 import static lugosancio_sop_1.Interface.sCountdown;
 import java.util.concurrent.ThreadLocalRandom;
+import javax.swing.JTextField;
 
 /**
  *
@@ -25,6 +26,10 @@ public class Director extends Thread {
     Semaphore sem = new Semaphore(1);
     Semaphore sem2 = new Semaphore(0);
     Semaphore isDayOver = new Semaphore(0);
+    
+    JTextField salarioPM;
+    JTextField faltasPM;
+    JTextField actividadDR;
     
     public class HiloD extends Thread {
         
@@ -54,9 +59,11 @@ public class Director extends Thread {
                     x = ThreadLocalRandom.current().nextInt(12, 19)*1000/24;
                     sem2.acquire();
                     System.out.println("empiexa supervision");
+                    actividadDR.setText("Supervisando al PM");
                     Thread.sleep(x);
                     isSupervisingOver = true;
                     System.out.println("LISTO SUPERVISION SEGUN D");
+                    actividadDR.setText("Idle");
                     Thread.sleep((duracionDiaEnSegundos*1000)-x);
                 }
             } catch (InterruptedException ex) {
@@ -102,4 +109,11 @@ public class Director extends Thread {
             Logger.getLogger(ProductorInicio.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public void setActividadDR(JTextField actividadDR) {
+        this.actividadDR = actividadDR;
+    }
+    
+    
+    
 }
