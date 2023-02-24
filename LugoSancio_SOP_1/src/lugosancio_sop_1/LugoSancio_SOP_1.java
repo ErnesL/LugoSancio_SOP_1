@@ -26,6 +26,10 @@ public class LugoSancio_SOP_1 {
         out = (out + 1) % k;
         return w;
     }
+    
+    public static void checkOnPM() {
+        //
+    }
 
     /**
      * @param args the command line arguments
