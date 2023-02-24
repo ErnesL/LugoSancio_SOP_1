@@ -8,7 +8,6 @@ package lugosancio_sop_1;
 import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import Interface.Interface;
 import static lugosancio_sop_1.LugoSancio_SOP_1.eCierre;
 import static lugosancio_sop_1.LugoSancio_SOP_1.eCreditos;
 import static lugosancio_sop_1.LugoSancio_SOP_1.eInicio;
@@ -39,9 +38,8 @@ public class Ensamblador extends Thread {
     Semaphore sem;
     String nombre;
 
-    public Ensamblador(Semaphore sem, int numeroProductores, String nombre, int duracionDiaEnSegundos) {
+    public Ensamblador(int numeroProductores, String nombre, int duracionDiaEnSegundos) {
         this.numeroDeProductores = numeroProductores;
-        this.sem = sem;
         this.nombre = nombre;
         this.duracionDiaEnSegundos = duracionDiaEnSegundos;
     }

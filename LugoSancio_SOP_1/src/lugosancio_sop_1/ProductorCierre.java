@@ -34,9 +34,8 @@ public class ProductorCierre extends Thread {
     String nombre;
     JTextField textField;
 
-    public ProductorCierre(Semaphore sem, int numeroProductores, String nombre, int duracionDiaEnSegundos) {
+    public ProductorCierre(int numeroProductores, String nombre, int duracionDiaEnSegundos) {
         this.numeroDeProductores = numeroProductores;
-        this.sem = sem;
         this.nombre = nombre;
 
         this.duracionDiaEnSegundos = duracionDiaEnSegundos;

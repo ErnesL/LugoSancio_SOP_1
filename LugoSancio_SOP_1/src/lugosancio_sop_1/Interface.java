@@ -87,7 +87,7 @@ public class Interface extends javax.swing.JFrame {
 
     ProductorCierre tCierre = new ProductorCierre(1, "Cierre", 1);
     ProductorPlottwist tPlottwist = new ProductorPlottwist(1, "Plot Twist", 1);
-    Ensamblador tEnsamblador = new Ensamblador(1, "Ensamblador", 1, 2);
+    Ensamblador tEnsamblador = new Ensamblador(1, "Ensamblador", 1);
 
     public Interface() {
         initComponents();
