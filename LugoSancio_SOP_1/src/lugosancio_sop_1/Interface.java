@@ -127,11 +127,11 @@ public class Interface extends javax.swing.JFrame {
     public static Semaphore ePlottwistRM;
 
     //Inicializando Threads de RM con valores bases
-    ProductorIntro tIntroRM = new ProductorIntro(1, "Intro", 1);
-    ProductorCreditos tCreditosRM = new ProductorCreditos(1, "Creditos", 1);
-    ProductorInicio tInicioRM = new ProductorInicio(1, "Inicio", 1);
-    ProductorCierre tCierreRM = new ProductorCierre(1, "Cierre", 1);
-    ProductorPlottwist tPlottwistRM = new ProductorPlottwist(1, "Plot Twist", 1);
+    ProductorIntroRM tIntroRM = new ProductorIntroRM(1, "Intro", 1);
+    ProductorCreditosRM tCreditosRM = new ProductorCreditosRM(1, "Creditos", 1);
+    ProductorInicioRM tInicioRM = new ProductorInicioRM(1, "Inicio", 1);
+    ProductorCierreRM tCierreRM = new ProductorCierreRM(1, "Cierre", 1);
+    ProductorPlottwistRM tPlottwistRM = new ProductorPlottwistRM(1, "Plot Twist", 1);
     Ensamblador tEnsambladorRM = new Ensamblador(1, "Ensamblador", 1);
 
     public Interface() {

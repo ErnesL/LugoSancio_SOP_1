@@ -41,7 +41,7 @@ public class ProductorInicio extends Thread {
         try {
             while (true) {
                 //se está creando la inicio
-                sleep(duracionDiaEnSegundos * 1000 / numeroDeProductores);
+                sleep(duracionDiaEnSegundos * 2000 / numeroDeProductores);
                 //se revisa si hay espacio en el buffer
                 eInicio.acquire();
                 //tiene que estar solito en el buffer

@@ -43,7 +43,7 @@ public class ProductorCierre extends Thread {
         try {
             while (true) {
                 //se está creando la cierre
-                sleep(duracionDiaEnSegundos * 1000 / numeroDeProductores);
+                sleep(duracionDiaEnSegundos * 4000 / numeroDeProductores);
                 //se revisa si hay espacio en el buffer
                 eCierre.acquire();
                 //tiene que estar solito en el buffer

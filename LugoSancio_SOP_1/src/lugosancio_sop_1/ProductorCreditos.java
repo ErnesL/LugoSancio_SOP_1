@@ -11,6 +11,8 @@ import static lugosancio_sop_1.Interface.sCreditos;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextField;
+import static lugosancio_sop_1.Interface.nCreditosRM;
+import static lugosancio_sop_1.Interface.sCreditosRM;
 import lugosancio_sop_1.LugoSancio_SOP_1;
 
 
@@ -42,18 +44,18 @@ public class ProductorCreditos extends Thread {
         try {
             while (true) {
                 //se está creando la creditos
-                sleep(duracionDiaEnSegundos*1000/numeroDeProductores);
+                sleep(duracionDiaEnSegundos*1000/numeroDeProductores*4);
                 //se revisa si hay espacio en el buffer
                 eCreditos.acquire();
                 //tiene que estar solito en el buffer
                 sCreditos.acquire();
                 //SECCION CRITICA
-                Interface.inCreditos = LugoSancio_SOP_1.append(creditosGenerico,Interface.bCreditos,Interface.driveCreditos,Interface.inCreditos);
+                Interface.inCreditos = LugoSancio_SOP_1.append(creditosGenerico,Interface.bCreditos,Interface.driveCreditos,Interface.inCreditosRM);
                 //ya salió de la sección crítica
-                sCreditos.release();
+                sCreditosRM.release();
                 //hay un item consumible más en N
-                nCreditos.release();
-                textField.setText(Integer.toString(nCreditos.availablePermits()));
+                nCreditosRM.release();
+                textField.setText(Integer.toString(nCreditosRM.availablePermits()));
                 montoPorPagar = montoPorPagar + sueldo*24;
             }
 
