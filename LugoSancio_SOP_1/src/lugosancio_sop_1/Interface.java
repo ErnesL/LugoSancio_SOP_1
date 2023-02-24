@@ -75,6 +75,8 @@ public class Interface extends javax.swing.JFrame {
     public static Semaphore sPlottwist = new Semaphore(1);
     public static Semaphore nPlottwist = new Semaphore(0);
     public static Semaphore ePlottwist;
+    
+    public static Semaphore sCountdown = new Semaphore(1);
 
     //Inicializando Threads de Velma con valores bases
     ProductorIntro tIntro = new ProductorIntro(1, "Intro", 1);

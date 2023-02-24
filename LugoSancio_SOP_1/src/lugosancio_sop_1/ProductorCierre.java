@@ -50,7 +50,7 @@ public class ProductorCierre extends Thread {
                 //tiene que estar solito en el buffer
                 sCierre.acquire();
                 //SECCION CRITICA
-                LugoSancio_SOP_1.append(cierreGenerico, Interface.bCierre, driveCierre, Interface.inCierre);
+                Interface.inCierre = LugoSancio_SOP_1.append(cierreGenerico, Interface.bCierre, driveCierre, Interface.inCierre);
                 //ya salió de la sección crítica
                 sCierre.release();
                 //hay un item consumible más en N
