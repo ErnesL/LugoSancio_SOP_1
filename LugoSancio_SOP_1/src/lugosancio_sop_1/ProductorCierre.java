@@ -13,6 +13,7 @@ import static lugosancio_sop_1.Interface.sCierre;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextField;
+import static lugosancio_sop_1.Interface.cantidadDeDiasEntreLanzamientos;
 import lugosancio_sop_1.LugoSancio_SOP_1;
 
 /**
@@ -41,7 +42,7 @@ public class ProductorCierre extends Thread {
     @Override
     public void run() {
         try {
-            while (true) {
+            while (cantidadDeDiasEntreLanzamientos > 0) {
                 //se está creando la cierre
                 sleep(duracionDiaEnSegundos * 4000 / numeroDeProductores);
                 //se revisa si hay espacio en el buffer

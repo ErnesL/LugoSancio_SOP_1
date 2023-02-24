@@ -13,6 +13,8 @@ import static lugosancio_sop_1.Interface.sCierre;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextField;
+import static lugosancio_sop_1.Interface.cantidadDeDiasEntreLanzamientos;
+import static lugosancio_sop_1.Interface.driveCierreRM;
 import static lugosancio_sop_1.Interface.eCierreRM;
 import static lugosancio_sop_1.Interface.nCierreRM;
 import static lugosancio_sop_1.Interface.sCierreRM;
@@ -44,7 +46,7 @@ public class ProductorCierreRM extends Thread {
     @Override
     public void run() {
         try {
-            while (true) {
+            while (cantidadDeDiasEntreLanzamientos > 0) {
                 //se está creando la cierre
                 sleep(duracionDiaEnSegundos * 2000 / numeroDeProductores);
                 //se revisa si hay espacio en el buffer
@@ -52,7 +54,7 @@ public class ProductorCierreRM extends Thread {
                 //tiene que estar solito en el buffer
                 sCierreRM.acquire();
                 //SECCION CRITICA
-                Interface.inCierreRM = LugoSancio_SOP_1.append(cierreGenerico, Interface.bCierreRM, driveCierre, Interface.inCierreRM);
+                Interface.inCierreRM = LugoSancio_SOP_1.append(cierreGenerico, Interface.bCierreRM, driveCierreRM, Interface.inCierreRM);
                 //ya salió de la sección crítica
                 sCierreRM.release();
                 //hay un item consumible más en N

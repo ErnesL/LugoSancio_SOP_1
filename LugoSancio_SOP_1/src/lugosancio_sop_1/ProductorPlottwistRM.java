@@ -11,6 +11,7 @@ import static lugosancio_sop_1.Interface.sPlottwist;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextField;
+import static lugosancio_sop_1.Interface.cantidadDeDiasEntreLanzamientos;
 import static lugosancio_sop_1.Interface.ePlottwistRM;
 import static lugosancio_sop_1.Interface.nPlottwistRM;
 import static lugosancio_sop_1.Interface.sPlottwistRM;
@@ -41,7 +42,7 @@ public class ProductorPlottwistRM extends Thread {
     @Override
     public void run() {
         try {
-            while (true) {
+            while (cantidadDeDiasEntreLanzamientos > 0) {
                 //se está creando la plottwist
                 sleep(duracionDiaEnSegundos * 2000 / numeroDeProductores);
                 //se revisa si hay espacio en el buffer
@@ -49,7 +50,7 @@ public class ProductorPlottwistRM extends Thread {
                 //tiene que estar solito en el buffer
                 sPlottwistRM.acquire();
                 //SECCION CRITICA
-                Interface.inPlottwistRM = LugoSancio_SOP_1.append(plottwistGenerico, Interface.bPlottwistRM, Interface.drivePlottwist, Interface.inPlottwistRM);
+                Interface.inPlottwistRM = LugoSancio_SOP_1.append(plottwistGenerico, Interface.bPlottwistRM, Interface.drivePlottwistRM, Interface.inPlottwistRM);
                 //ya salió de la sección crítica
                 sPlottwistRM.release();
                 //hay un item consumible más en N

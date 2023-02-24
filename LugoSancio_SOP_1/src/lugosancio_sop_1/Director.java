@@ -22,12 +22,13 @@ public class Director extends Thread {
     boolean seAcaboElDia;
     int duracionDiaEnSegundos;
     boolean isSupervisingOver;
-    
+    int montoPorPagar = 0;
+    int sueldo = 100;
     Semaphore sem = new Semaphore(1);
     Semaphore sem2 = new Semaphore(0);
     Semaphore isDayOver = new Semaphore(0);
     
-    JTextField salarioPM;
+    JTextField sueldoDirector;
     JTextField faltasPM;
     JTextField actividadDR;
     
@@ -41,7 +42,7 @@ public class Director extends Thread {
                     Thread.sleep(duracionDiaEnSegundos*1000);
                     seAcaboElDia = true;
                     isDayOver.release();
-                    System.out.println("LISTO UN DIA SEGUN D");
+                   
                 }
             } catch (InterruptedException ex) {
             Logger.getLogger(ProductorIntro.class.getName()).log(Level.SEVERE, null, ex);
@@ -58,11 +59,11 @@ public class Director extends Thread {
                 while(true) {
                     x = ThreadLocalRandom.current().nextInt(12, 19)*1000/24;
                     sem2.acquire();
-                    System.out.println("empiexa supervision");
+                   
                     actividadDR.setText("Supervisando al PM");
                     Thread.sleep(x);
                     isSupervisingOver = true;
-                    System.out.println("LISTO SUPERVISION SEGUN D");
+                    
                     actividadDR.setText("Idle");
                     Thread.sleep((duracionDiaEnSegundos*1000)-x);
                 }
@@ -89,7 +90,7 @@ public class Director extends Thread {
             Hilo2 tHilo2 = new Hilo2();
             tHilo.start();
             tHilo2.start();
-            while (true) {
+            while (diasRestantes > 0) {
                 seAcaboElDia = false;
                 sCountdown.acquire();
                 // TODO: leer valor para mostrar en interfaz
@@ -102,13 +103,44 @@ public class Director extends Thread {
                     //TODO: LugoSancio_SOP_1.checkOnPM();
                     }
                 isDayOver.acquire();
-                System.out.println("uno x dia DIRECTOR");
+                
                 sem.release();
+                
+                montoPorPagar = montoPorPagar + sueldo;
+                sueldoDirector.setText(Integer.toString(montoPorPagar));
+                
                 }
+            
             } catch (InterruptedException ex) {
             Logger.getLogger(ProductorInicio.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public int getMontoPorPagar() {
+        return montoPorPagar;
+    }
+
+    public void setMontoPorPagar(int montoPorPagar) {
+        this.montoPorPagar = montoPorPagar;
+    }
+
+    public JTextField getFaltasPM() {
+        return faltasPM;
+    }
+
+    public void setFaltasPM(JTextField faltasPM) {
+        this.faltasPM = faltasPM;
+    }
+
+    public JTextField getSueldoDirector() {
+        return sueldoDirector;
+    }
+
+    public void setSueldoDirector(JTextField sueldoDirector) {
+        this.sueldoDirector = sueldoDirector;
+    }
+    
+    
 
     public void setActividadDR(JTextField actividadDR) {
         this.actividadDR = actividadDR;

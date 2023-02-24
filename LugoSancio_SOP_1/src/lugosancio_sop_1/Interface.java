@@ -30,8 +30,13 @@ public class Interface extends javax.swing.JFrame {
 
     //Config
     int duracionDiaEnSegundos = 5;
-    int cantidadDeDiasEntreLanzamientos = 20;
+    public static int cantidadDeDiasEntreLanzamientos = 10;
     static int dias = 0;
+    int montoPlanta = 0;
+    int viewersVelma = 950000;
+    int viewersRM = 1000000;
+    int totalAudience;
+    int totalEarnings;
 
     //Drive para Velma
     public static int driveIntro = 30;
@@ -39,7 +44,7 @@ public class Interface extends javax.swing.JFrame {
     public static int driveInicio = 50;
     public static int driveCierre = 55;
     public static int drivePlottwist = 40;
-    
+
     //Drive para RM
     public static int driveIntroRM = 30;
     public static int driveCreditosRM = 25;
@@ -92,11 +97,11 @@ public class Interface extends javax.swing.JFrame {
     ProductorCierre tCierre = new ProductorCierre(1, "Cierre", 1);
     ProductorPlottwist tPlottwist = new ProductorPlottwist(1, "Plot Twist", 1);
     Ensamblador tEnsamblador = new Ensamblador(1, "Ensamblador", 1);
-    
+
     //Inicializando PM y Director
-    ProjectManager tPM = new ProjectManager(cantidadDeDiasEntreLanzamientos,4,1);
-    Director tDirector = new Director(cantidadDeDiasEntreLanzamientos,1);
-    
+    ProjectManager tPM = new ProjectManager(cantidadDeDiasEntreLanzamientos, 4, 1);
+    Director tDirector = new Director(cantidadDeDiasEntreLanzamientos, 1);
+
     //RICK&MORTY
     //Buffers para RM
     public static String[] bIntroRM;
@@ -140,7 +145,7 @@ public class Interface extends javax.swing.JFrame {
     ProductorInicioRM tInicioRM = new ProductorInicioRM(1, "Inicio", 1);
     ProductorCierreRM tCierreRM = new ProductorCierreRM(1, "Cierre", 1);
     ProductorPlottwistRM tPlottwistRM = new ProductorPlottwistRM(1, "Plot Twist", 1);
-    Ensamblador tEnsambladorRM = new Ensamblador(1, "Ensamblador", 1);
+    EnsambladorRM tEnsambladorRM = new EnsambladorRM(1, "Ensamblador", 1);
 
     public Interface() {
         initComponents();
@@ -159,7 +164,7 @@ public class Interface extends javax.swing.JFrame {
             //Dias
             duracionDiaEnSegundos = Integer.parseInt(dataSplit[0]);
             cantidadDeDiasEntreLanzamientos = Integer.parseInt(dataSplit[1]);
-            
+
             //Productores
             velmaIntro.setText(productoresSplit[0]);
             velmaCreditos.setText(productoresSplit[1]);
@@ -191,14 +196,14 @@ public class Interface extends javax.swing.JFrame {
 
             rmEnsambladores.setText(dataSplit[4]);
             tEnsambladorRM.setNumeroDeProductores(Integer.parseInt(rmEnsambladores.getText()));
-            
+
             //Drive para Velma
             driveIntro = Integer.parseInt(almacenamientoSplit[0]);
             driveCreditos = Integer.parseInt(almacenamientoSplit[1]);
             driveInicio = Integer.parseInt(almacenamientoSplit[2]);
             driveCierre = Integer.parseInt(almacenamientoSplit[3]);
             drivePlottwist = Integer.parseInt(almacenamientoSplit[4]);
-            
+
             //Drive para RM
             driveIntroRM = Integer.parseInt(almacenamientoSplit[0]);
             driveCreditosRM = Integer.parseInt(almacenamientoSplit[1]);
@@ -318,7 +323,7 @@ public class Interface extends javax.swing.JFrame {
         jLabel28 = new javax.swing.JLabel();
         velmaInventarioPlottwistDisponible = new javax.swing.JTextField();
         jLabel29 = new javax.swing.JLabel();
-        velmoCapsAcabadosEnUltimoLote = new javax.swing.JTextField();
+        ultimoLote = new javax.swing.JTextField();
         jLabel30 = new javax.swing.JLabel();
         rmEnsambladores = new javax.swing.JTextField();
         jLabel31 = new javax.swing.JLabel();
@@ -329,34 +334,18 @@ public class Interface extends javax.swing.JFrame {
         jLabel34 = new javax.swing.JLabel();
         velmaCaps = new javax.swing.JTextField();
         jLabel35 = new javax.swing.JLabel();
-        velmaPMActividad = new javax.swing.JTextField();
+        pmActividad = new javax.swing.JTextField();
         jLabel36 = new javax.swing.JLabel();
-        velmaPMSalario = new javax.swing.JTextField();
+        pmSalario = new javax.swing.JTextField();
         jLabel37 = new javax.swing.JLabel();
-        velmaGastoMensual = new javax.swing.JTextField();
+        gastoMensual = new javax.swing.JTextField();
         jLabel38 = new javax.swing.JLabel();
-        velmoGananciasTotales = new javax.swing.JTextField();
+        gananciasTotales = new javax.swing.JTextField();
         jLabel39 = new javax.swing.JLabel();
         velmaDirectorActividad = new javax.swing.JTextField();
         jLabel40 = new javax.swing.JLabel();
         jLabel41 = new javax.swing.JLabel();
         velmaDeadline = new javax.swing.JTextField();
-        pmCapsAcabadosEnUltimoLote = new javax.swing.JTextField();
-        jLabel42 = new javax.swing.JLabel();
-        rmPMFaltas = new javax.swing.JTextField();
-        jLabel43 = new javax.swing.JLabel();
-        jLabel44 = new javax.swing.JLabel();
-        jLabel45 = new javax.swing.JLabel();
-        rmPMActividad = new javax.swing.JTextField();
-        jLabel46 = new javax.swing.JLabel();
-        rmPMSalario = new javax.swing.JTextField();
-        jLabel47 = new javax.swing.JLabel();
-        rmGastoMensual = new javax.swing.JTextField();
-        jLabel48 = new javax.swing.JLabel();
-        rmGananciasTotales = new javax.swing.JTextField();
-        jLabel49 = new javax.swing.JLabel();
-        rmDirectorActividad = new javax.swing.JTextField();
-        jLabel50 = new javax.swing.JLabel();
         jLabel51 = new javax.swing.JLabel();
         rmDeadline = new javax.swing.JTextField();
         velmaEnsambladoresUp = new javax.swing.JButton();
@@ -399,6 +388,7 @@ public class Interface extends javax.swing.JFrame {
         rmInventarioCreditosMaximo = new javax.swing.JTextField();
         rmInventarioInicioMaximo = new javax.swing.JTextField();
         rmInventarioCierreMaximo = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -678,14 +668,14 @@ public class Interface extends javax.swing.JFrame {
         jLabel29.setText("CANTIDAD DE CAPS TERMINADOS");
         jPanel1.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 400, -1, -1));
 
-        velmoCapsAcabadosEnUltimoLote.setEditable(false);
-        velmoCapsAcabadosEnUltimoLote.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        velmoCapsAcabadosEnUltimoLote.addActionListener(new java.awt.event.ActionListener() {
+        ultimoLote.setEditable(false);
+        ultimoLote.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        ultimoLote.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                velmoCapsAcabadosEnUltimoLoteActionPerformed(evt);
+                ultimoLoteActionPerformed(evt);
             }
         });
-        jPanel1.add(velmoCapsAcabadosEnUltimoLote, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 610, 40, -1));
+        jPanel1.add(ultimoLote, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 630, 90, -1));
 
         jLabel30.setText("CANTIDAD DE ENSAMBLADORES");
         jPanel1.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 370, -1, -1));
@@ -712,7 +702,7 @@ public class Interface extends javax.swing.JFrame {
         jPanel1.add(rmCaps, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 400, 40, -1));
 
         jLabel32.setText("PROJECT MANAGER");
-        jPanel1.add(jLabel32, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 460, -1, -1));
+        jPanel1.add(jLabel32, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 470, -1, -1));
 
         velmaPMFaltas.setEditable(false);
         velmaPMFaltas.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -721,13 +711,13 @@ public class Interface extends javax.swing.JFrame {
                 velmaPMFaltasActionPerformed(evt);
             }
         });
-        jPanel1.add(velmaPMFaltas, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 520, 40, -1));
+        jPanel1.add(velmaPMFaltas, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 530, 140, -1));
 
         jLabel33.setText("CAPITULOS TERMINADOS (ULTIMO LOTE)");
-        jPanel1.add(jLabel33, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 610, -1, -1));
+        jPanel1.add(jLabel33, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 630, -1, -1));
 
         jLabel34.setText("ACTIVIDAD");
-        jPanel1.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 480, -1, -1));
+        jPanel1.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 490, -1, -1));
 
         velmaCaps.setEditable(false);
         velmaCaps.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -739,55 +729,55 @@ public class Interface extends javax.swing.JFrame {
         jPanel1.add(velmaCaps, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 400, 40, -1));
 
         jLabel35.setText("SALARIO");
-        jPanel1.add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 500, -1, -1));
+        jPanel1.add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 510, -1, -1));
 
-        velmaPMActividad.setEditable(false);
-        velmaPMActividad.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        velmaPMActividad.addActionListener(new java.awt.event.ActionListener() {
+        pmActividad.setEditable(false);
+        pmActividad.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        pmActividad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                velmaPMActividadActionPerformed(evt);
+                pmActividadActionPerformed(evt);
             }
         });
-        jPanel1.add(velmaPMActividad, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 480, 40, -1));
+        jPanel1.add(pmActividad, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 490, 140, -1));
 
         jLabel36.setText("FALTAS");
-        jPanel1.add(jLabel36, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 520, -1, -1));
+        jPanel1.add(jLabel36, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 530, -1, -1));
 
-        velmaPMSalario.setEditable(false);
-        velmaPMSalario.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        velmaPMSalario.addActionListener(new java.awt.event.ActionListener() {
+        pmSalario.setEditable(false);
+        pmSalario.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        pmSalario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                velmaPMSalarioActionPerformed(evt);
+                pmSalarioActionPerformed(evt);
             }
         });
-        jPanel1.add(velmaPMSalario, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 500, 40, -1));
+        jPanel1.add(pmSalario, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 510, 140, -1));
 
         jLabel37.setText("DIRECTOR");
-        jPanel1.add(jLabel37, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 550, -1, -1));
+        jPanel1.add(jLabel37, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 570, -1, -1));
 
-        velmaGastoMensual.setEditable(false);
-        velmaGastoMensual.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        velmaGastoMensual.addActionListener(new java.awt.event.ActionListener() {
+        gastoMensual.setEditable(false);
+        gastoMensual.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        gastoMensual.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                velmaGastoMensualActionPerformed(evt);
+                gastoMensualActionPerformed(evt);
             }
         });
-        jPanel1.add(velmaGastoMensual, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 590, 40, -1));
+        jPanel1.add(gastoMensual, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 610, 90, -1));
 
         jLabel38.setText("GASTO DE LA PLANTA (MENSUAL)");
-        jPanel1.add(jLabel38, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 590, -1, -1));
+        jPanel1.add(jLabel38, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 610, -1, -1));
 
-        velmoGananciasTotales.setEditable(false);
-        velmoGananciasTotales.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        velmoGananciasTotales.addActionListener(new java.awt.event.ActionListener() {
+        gananciasTotales.setEditable(false);
+        gananciasTotales.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        gananciasTotales.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                velmoGananciasTotalesActionPerformed(evt);
+                gananciasTotalesActionPerformed(evt);
             }
         });
-        jPanel1.add(velmoGananciasTotales, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 630, 40, -1));
+        jPanel1.add(gananciasTotales, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 650, 90, -1));
 
         jLabel39.setText("GANANCIAS TOTALES");
-        jPanel1.add(jLabel39, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 630, -1, -1));
+        jPanel1.add(jLabel39, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 650, -1, -1));
 
         velmaDirectorActividad.setEditable(false);
         velmaDirectorActividad.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -796,10 +786,10 @@ public class Interface extends javax.swing.JFrame {
                 velmaDirectorActividadActionPerformed(evt);
             }
         });
-        jPanel1.add(velmaDirectorActividad, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 570, 40, -1));
+        jPanel1.add(velmaDirectorActividad, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 590, 90, -1));
 
         jLabel40.setText("ACTIVIDAD");
-        jPanel1.add(jLabel40, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 570, -1, -1));
+        jPanel1.add(jLabel40, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 590, -1, -1));
 
         jLabel41.setText("DEADLINE (DIAS)");
         jPanel1.add(jLabel41, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 430, 80, -1));
@@ -812,96 +802,6 @@ public class Interface extends javax.swing.JFrame {
             }
         });
         jPanel1.add(velmaDeadline, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 430, 40, -1));
-
-        pmCapsAcabadosEnUltimoLote.setEditable(false);
-        pmCapsAcabadosEnUltimoLote.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        pmCapsAcabadosEnUltimoLote.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pmCapsAcabadosEnUltimoLoteActionPerformed(evt);
-            }
-        });
-        jPanel1.add(pmCapsAcabadosEnUltimoLote, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 610, 40, -1));
-
-        jLabel42.setText("PROJECT MANAGER");
-        jPanel1.add(jLabel42, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 460, -1, -1));
-
-        rmPMFaltas.setEditable(false);
-        rmPMFaltas.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        rmPMFaltas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rmPMFaltasActionPerformed(evt);
-            }
-        });
-        jPanel1.add(rmPMFaltas, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 520, 40, -1));
-
-        jLabel43.setText("CAPITULOS TERMINADOS (ULTIMO LOTE)");
-        jPanel1.add(jLabel43, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 610, -1, -1));
-
-        jLabel44.setText("ACTIVIDAD");
-        jPanel1.add(jLabel44, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 480, -1, -1));
-
-        jLabel45.setText("SALARIO");
-        jPanel1.add(jLabel45, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 500, -1, -1));
-
-        rmPMActividad.setEditable(false);
-        rmPMActividad.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        rmPMActividad.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rmPMActividadActionPerformed(evt);
-            }
-        });
-        jPanel1.add(rmPMActividad, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 480, 40, -1));
-
-        jLabel46.setText("FALTAS");
-        jPanel1.add(jLabel46, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 520, -1, -1));
-
-        rmPMSalario.setEditable(false);
-        rmPMSalario.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        rmPMSalario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rmPMSalarioActionPerformed(evt);
-            }
-        });
-        jPanel1.add(rmPMSalario, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 500, 40, -1));
-
-        jLabel47.setText("DIRECTOR");
-        jPanel1.add(jLabel47, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 550, -1, -1));
-
-        rmGastoMensual.setEditable(false);
-        rmGastoMensual.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        rmGastoMensual.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rmGastoMensualActionPerformed(evt);
-            }
-        });
-        jPanel1.add(rmGastoMensual, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 590, 40, -1));
-
-        jLabel48.setText("GASTO DE LA PLANTA (MENSUAL)");
-        jPanel1.add(jLabel48, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 590, -1, -1));
-
-        rmGananciasTotales.setEditable(false);
-        rmGananciasTotales.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        rmGananciasTotales.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rmGananciasTotalesActionPerformed(evt);
-            }
-        });
-        jPanel1.add(rmGananciasTotales, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 630, 40, -1));
-
-        jLabel49.setText("GANANCIAS TOTALES");
-        jPanel1.add(jLabel49, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 630, -1, -1));
-
-        rmDirectorActividad.setEditable(false);
-        rmDirectorActividad.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        rmDirectorActividad.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rmDirectorActividadActionPerformed(evt);
-            }
-        });
-        jPanel1.add(rmDirectorActividad, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 570, 40, -1));
-
-        jLabel50.setText("ACTIVIDAD");
-        jPanel1.add(jLabel50, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 570, -1, -1));
 
         jLabel51.setText("DEADLINE (DIAS)");
         jPanel1.add(jLabel51, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 430, -1, -1));
@@ -1215,6 +1115,14 @@ public class Interface extends javax.swing.JFrame {
         });
         jPanel1.add(rmInventarioCierreMaximo, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 320, 40, -1));
 
+        jButton1.setText("Mostrar Estadisticas");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 690, -1, -1));
+
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 880, 710));
 
         pack();
@@ -1303,9 +1211,9 @@ public class Interface extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_velmaInventarioPlottwistDisponibleActionPerformed
 
-    private void velmoCapsAcabadosEnUltimoLoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_velmoCapsAcabadosEnUltimoLoteActionPerformed
+    private void ultimoLoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ultimoLoteActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_velmoCapsAcabadosEnUltimoLoteActionPerformed
+    }//GEN-LAST:event_ultimoLoteActionPerformed
 
     private void rmEnsambladoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rmEnsambladoresActionPerformed
         // TODO add your handling code here:
@@ -1320,24 +1228,24 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_velmaPMFaltasActionPerformed
 
     private void velmaCapsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_velmaCapsActionPerformed
-        
+
     }//GEN-LAST:event_velmaCapsActionPerformed
 
-    private void velmaPMActividadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_velmaPMActividadActionPerformed
+    private void pmActividadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pmActividadActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_velmaPMActividadActionPerformed
+    }//GEN-LAST:event_pmActividadActionPerformed
 
-    private void velmaPMSalarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_velmaPMSalarioActionPerformed
+    private void pmSalarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pmSalarioActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_velmaPMSalarioActionPerformed
+    }//GEN-LAST:event_pmSalarioActionPerformed
 
-    private void velmaGastoMensualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_velmaGastoMensualActionPerformed
+    private void gastoMensualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gastoMensualActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_velmaGastoMensualActionPerformed
+    }//GEN-LAST:event_gastoMensualActionPerformed
 
-    private void velmoGananciasTotalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_velmoGananciasTotalesActionPerformed
+    private void gananciasTotalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gananciasTotalesActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_velmoGananciasTotalesActionPerformed
+    }//GEN-LAST:event_gananciasTotalesActionPerformed
 
     private void velmaDirectorActividadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_velmaDirectorActividadActionPerformed
         // TODO add your handling code here:
@@ -1346,34 +1254,6 @@ public class Interface extends javax.swing.JFrame {
     private void velmaDeadlineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_velmaDeadlineActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_velmaDeadlineActionPerformed
-
-    private void pmCapsAcabadosEnUltimoLoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pmCapsAcabadosEnUltimoLoteActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_pmCapsAcabadosEnUltimoLoteActionPerformed
-
-    private void rmPMFaltasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rmPMFaltasActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rmPMFaltasActionPerformed
-
-    private void rmPMActividadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rmPMActividadActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rmPMActividadActionPerformed
-
-    private void rmPMSalarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rmPMSalarioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rmPMSalarioActionPerformed
-
-    private void rmGastoMensualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rmGastoMensualActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rmGastoMensualActionPerformed
-
-    private void rmGananciasTotalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rmGananciasTotalesActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rmGananciasTotalesActionPerformed
-
-    private void rmDirectorActividadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rmDirectorActividadActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rmDirectorActividadActionPerformed
 
     private void rmDeadlineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rmDeadlineActionPerformed
         // TODO add your handling code here:
@@ -1460,12 +1340,19 @@ public class Interface extends javax.swing.JFrame {
             rmEnsambladores.setText(dataSplit[4]);
             tEnsambladorRM.setNumeroDeProductores(Integer.parseInt(rmEnsambladores.getText()));
 
-            //Drive
+            //Drive para Velma
             driveIntro = Integer.parseInt(almacenamientoSplit[0]);
             driveCreditos = Integer.parseInt(almacenamientoSplit[1]);
             driveInicio = Integer.parseInt(almacenamientoSplit[2]);
             driveCierre = Integer.parseInt(almacenamientoSplit[3]);
             drivePlottwist = Integer.parseInt(almacenamientoSplit[4]);
+
+            //Drive para RM
+            driveIntroRM = Integer.parseInt(almacenamientoSplit[0]);
+            driveCreditosRM = Integer.parseInt(almacenamientoSplit[1]);
+            driveInicioRM = Integer.parseInt(almacenamientoSplit[2]);
+            driveCierreRM = Integer.parseInt(almacenamientoSplit[3]);
+            drivePlottwistRM = Integer.parseInt(almacenamientoSplit[4]);
 
             //Buffers
             bIntro = new String[driveIntro];
@@ -1499,11 +1386,11 @@ public class Interface extends javax.swing.JFrame {
             velmaInventarioCierreMaximo.setText(Integer.toString(driveCierre));
             velmaInventarioPlottwistMaximo.setText(Integer.toString(drivePlottwist));
 
-            rmInventarioIntroMaximo.setText(Integer.toString(driveIntro));
-            rmInventarioCreditosMaximo.setText(Integer.toString(driveCreditos));
-            rmInventarioInicioMaximo.setText(Integer.toString(driveInicio));
-            rmInventarioCierreMaximo.setText(Integer.toString(driveCierre));
-            rmInventarioPlottwistMaximo.setText(Integer.toString(drivePlottwist));
+            rmInventarioIntroMaximo.setText(Integer.toString(driveIntroRM));
+            rmInventarioCreditosMaximo.setText(Integer.toString(driveCreditosRM));
+            rmInventarioInicioMaximo.setText(Integer.toString(driveInicioRM));
+            rmInventarioCierreMaximo.setText(Integer.toString(driveCierreRM));
+            rmInventarioPlottwistMaximo.setText(Integer.toString(drivePlottwistRM));
 
             //InventarioDisponible
             velmaInventarioIntroDisponible.setText(Integer.toString(nIntro.availablePermits()));
@@ -1679,16 +1566,16 @@ public class Interface extends javax.swing.JFrame {
         tInicioRM.setTextField(rmInventarioInicioDisponible);
         tCierreRM.setTextField(rmInventarioCierreDisponible);
         tPlottwistRM.setTextField(rmInventarioPlottwistDisponible);
-        
+
         tEnsamblador.setTextField(velmaCaps);
         tEnsambladorRM.setTextField(rmCaps);
-        
+
         tPM.setVelmaDeadline(velmaDeadline);
         tPM.setRmDeadline(rmDeadline);
-        
+        tPM.setActividad(pmActividad);
+        tPM.setSalario(pmSalario);
+
         tDirector.setActividadDR(velmaDirectorActividad);
-        
-        
 
         tIntro.start();
         tCreditos.start();
@@ -1706,6 +1593,7 @@ public class Interface extends javax.swing.JFrame {
 
         tPM.start();
         tDirector.start();
+
 
     }//GEN-LAST:event_startActionPerformed
 
@@ -1869,6 +1757,15 @@ public class Interface extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_rmPlottwistDownActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        montoPlanta = tIntro.getMontoPorPagar() + tCreditos.getMontoPorPagar() + tInicio.getMontoPorPagar() + tCierre.getMontoPorPagar() + tPlottwist.getMontoPorPagar() + tEnsamblador.getMontoPorPagar() + tPM.getMontoPorPagar() + tDirector.getMontoPorPagar() + tIntroRM.getMontoPorPagar() + tCreditosRM.getMontoPorPagar() + tInicio.getMontoPorPagar() + tCierreRM.getMontoPorPagar() + tPlottwistRM.getMontoPorPagar() + tEnsambladorRM.getMontoPorPagar();
+        gastoMensual.setText(Integer.toString(montoPlanta));
+        ultimoLote.setText(Integer.toString(tEnsamblador.getCapitulosListos() + tEnsambladorRM.getCapitulosListos()));
+        totalAudience = (viewersVelma + viewersRM) * (tEnsamblador.getCapitulosListos() + tEnsambladorRM.getCapitulosListos());
+        totalEarnings = 100000 * totalAudience / 150000;
+        gananciasTotales.setText(Integer.toString(totalEarnings));
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1912,6 +1809,9 @@ public class Interface extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton config;
+    private javax.swing.JTextField gananciasTotales;
+    private javax.swing.JTextField gastoMensual;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
@@ -1945,16 +1845,7 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel40;
     private javax.swing.JLabel jLabel41;
-    private javax.swing.JLabel jLabel42;
-    private javax.swing.JLabel jLabel43;
-    private javax.swing.JLabel jLabel44;
-    private javax.swing.JLabel jLabel45;
-    private javax.swing.JLabel jLabel46;
-    private javax.swing.JLabel jLabel47;
-    private javax.swing.JLabel jLabel48;
-    private javax.swing.JLabel jLabel49;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel50;
     private javax.swing.JLabel jLabel51;
     private javax.swing.JLabel jLabel52;
     private javax.swing.JLabel jLabel53;
@@ -1965,7 +1856,8 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField pmCapsAcabadosEnUltimoLote;
+    private javax.swing.JTextField pmActividad;
+    private javax.swing.JTextField pmSalario;
     private javax.swing.JTextField rmCaps;
     private javax.swing.JTextField rmCierre;
     private javax.swing.JButton rmCierreDown;
@@ -1974,12 +1866,9 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JButton rmCreditosDown;
     private javax.swing.JButton rmCreditosUp;
     private javax.swing.JTextField rmDeadline;
-    private javax.swing.JTextField rmDirectorActividad;
     private javax.swing.JTextField rmEnsambladores;
     private javax.swing.JButton rmEnsambladoresDown;
     private javax.swing.JButton rmEnsambladoresUp;
-    private javax.swing.JTextField rmGananciasTotales;
-    private javax.swing.JTextField rmGastoMensual;
     private javax.swing.JTextField rmInicio;
     private javax.swing.JButton rmInicioDown;
     private javax.swing.JButton rmInicioUp;
@@ -1996,14 +1885,12 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JTextField rmInventarioIntroMaximo;
     private javax.swing.JTextField rmInventarioPlottwistDisponible;
     private javax.swing.JTextField rmInventarioPlottwistMaximo;
-    private javax.swing.JTextField rmPMActividad;
-    private javax.swing.JTextField rmPMFaltas;
-    private javax.swing.JTextField rmPMSalario;
     private javax.swing.JTextField rmPlottwist;
     private javax.swing.JButton rmPlottwistDown;
     private javax.swing.JButton rmPlottwistUp;
     private javax.swing.JLabel rmProductoresLabel;
     private javax.swing.JToggleButton start;
+    private javax.swing.JTextField ultimoLote;
     private javax.swing.JTextField velmaCaps;
     private javax.swing.JTextField velmaCierre;
     private javax.swing.JButton velmaCierreDown;
@@ -2016,7 +1903,6 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JTextField velmaEnsambladores;
     private javax.swing.JButton velmaEnsambladoresDown;
     private javax.swing.JButton velmaEnsambladoresUp;
-    private javax.swing.JTextField velmaGastoMensual;
     private javax.swing.JTextField velmaInicio;
     private javax.swing.JButton velmaInicioDown;
     private javax.swing.JButton velmaInicioUp;
@@ -2033,14 +1919,10 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JTextField velmaInventarioIntroMaximo;
     private javax.swing.JTextField velmaInventarioPlottwistDisponible;
     private javax.swing.JTextField velmaInventarioPlottwistMaximo;
-    private javax.swing.JTextField velmaPMActividad;
     private javax.swing.JTextField velmaPMFaltas;
-    private javax.swing.JTextField velmaPMSalario;
     private javax.swing.JTextField velmaPlottwist;
     private javax.swing.JButton velmaPlottwistDown;
     private javax.swing.JButton velmaPlottwistUp;
     private javax.swing.JLabel velmaProductoresLabel;
-    private javax.swing.JTextField velmoCapsAcabadosEnUltimoLote;
-    private javax.swing.JTextField velmoGananciasTotales;
     // End of variables declaration//GEN-END:variables
 }

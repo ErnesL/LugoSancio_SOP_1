@@ -11,6 +11,7 @@ import static lugosancio_sop_1.Interface.sInicio;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextField;
+import static lugosancio_sop_1.Interface.cantidadDeDiasEntreLanzamientos;
 import lugosancio_sop_1.LugoSancio_SOP_1;
 
 /**
@@ -39,7 +40,7 @@ public class ProductorInicio extends Thread {
     @Override
     public void run() {
         try {
-            while (true) {
+            while (cantidadDeDiasEntreLanzamientos > 0) {
                 //se está creando la inicio
                 sleep(duracionDiaEnSegundos * 2000 / numeroDeProductores);
                 //se revisa si hay espacio en el buffer

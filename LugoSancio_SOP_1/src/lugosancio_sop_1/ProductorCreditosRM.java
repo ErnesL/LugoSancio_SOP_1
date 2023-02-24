@@ -11,6 +11,7 @@ import static lugosancio_sop_1.Interface.sCreditos;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextField;
+import static lugosancio_sop_1.Interface.cantidadDeDiasEntreLanzamientos;
 import static lugosancio_sop_1.Interface.eCreditosRM;
 import static lugosancio_sop_1.Interface.sCreditosRM;
 import lugosancio_sop_1.LugoSancio_SOP_1;
@@ -42,7 +43,7 @@ public class ProductorCreditosRM extends Thread {
     @Override
     public void run() {
         try {
-            while (true) {
+            while (cantidadDeDiasEntreLanzamientos > 0) {
                 //se está creando la creditos
                 sleep(duracionDiaEnSegundos*1000/numeroDeProductores*2);
                 //se revisa si hay espacio en el buffer
@@ -50,7 +51,7 @@ public class ProductorCreditosRM extends Thread {
                 //tiene que estar solito en el buffer
                 sCreditosRM.acquire();
                 //SECCION CRITICA
-                Interface.inCreditosRM = LugoSancio_SOP_1.append(creditosGenerico,Interface.bCreditosRM,Interface.driveCreditos,Interface.inCreditos);
+                Interface.inCreditosRM = LugoSancio_SOP_1.append(creditosGenerico,Interface.bCreditosRM,Interface.driveCreditosRM,Interface.inCreditos);
                 //ya salió de la sección crítica
                 sCreditos.release();
                 //hay un item consumible más en N

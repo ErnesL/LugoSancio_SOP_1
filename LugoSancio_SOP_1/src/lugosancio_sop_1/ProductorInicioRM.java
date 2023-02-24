@@ -11,6 +11,7 @@ import static lugosancio_sop_1.Interface.sInicio;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextField;
+import static lugosancio_sop_1.Interface.cantidadDeDiasEntreLanzamientos;
 import static lugosancio_sop_1.Interface.eInicioRM;
 import static lugosancio_sop_1.Interface.nInicioRM;
 import static lugosancio_sop_1.Interface.sInicioRM;
@@ -42,7 +43,7 @@ public class ProductorInicioRM extends Thread {
     @Override
     public void run() {
         try {
-            while (true) {
+            while (cantidadDeDiasEntreLanzamientos > 0) {
                 //se está creando la inicio
                 sleep(duracionDiaEnSegundos * 3000 / numeroDeProductores);
                 //se revisa si hay espacio en el buffer
@@ -50,7 +51,7 @@ public class ProductorInicioRM extends Thread {
                 //tiene que estar solito en el buffer
                 sInicioRM.acquire();
                 //SECCION CRITICA
-                Interface.inInicioRM = LugoSancio_SOP_1.append(inicioGenerico, Interface.bInicioRM, Interface.driveInicio, Interface.inInicioRM);
+                Interface.inInicioRM = LugoSancio_SOP_1.append(inicioGenerico, Interface.bInicioRM, Interface.driveInicioRM, Interface.inInicioRM);
                 //ya salió de la sección crítica
                 sInicioRM.release();
                 //hay un item consumible más en N

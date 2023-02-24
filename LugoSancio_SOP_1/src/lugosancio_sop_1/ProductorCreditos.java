@@ -11,6 +11,7 @@ import static lugosancio_sop_1.Interface.sCreditos;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextField;
+import static lugosancio_sop_1.Interface.cantidadDeDiasEntreLanzamientos;
 import static lugosancio_sop_1.Interface.nCreditosRM;
 import static lugosancio_sop_1.Interface.sCreditosRM;
 import lugosancio_sop_1.LugoSancio_SOP_1;
@@ -42,7 +43,7 @@ public class ProductorCreditos extends Thread {
     @Override
     public void run() {
         try {
-            while (true) {
+            while (cantidadDeDiasEntreLanzamientos > 0) {
                 //se está creando la creditos
                 sleep(duracionDiaEnSegundos*1000/numeroDeProductores*4);
                 //se revisa si hay espacio en el buffer
