@@ -34,20 +34,20 @@ public class Interface extends javax.swing.JFrame {
     static int dias = 0;
 
     //Drive
-    public static int driveIntro = 10;
-    public static int driveCreditos = 5;
-    public static int driveInicio = 5;
-    public static int driveCierre = 5;
-    public static int drivePlottwist = 5;
+    public static int driveIntro = 30;
+    public static int driveCreditos = 25;
+    public static int driveInicio = 50;
+    public static int driveCierre = 55;
+    public static int drivePlottwist = 40;
 
-    //Buffers
+    //Buffers para Velma
     public static String[] bIntro;
     public static String[] bCreditos;
     public static String[] bInicio;
     public static String[] bCierre;
     public static String[] bPlottwist;
 
-    //In/out
+    //In/out para Velma
     public static int inIntro = 0;
     public static int outIntro = 0;
     public static int inCreditos = 0;
@@ -59,11 +59,7 @@ public class Interface extends javax.swing.JFrame {
     public static int inPlottwist = 0;
     public static int outPlottwist = 0;
 
-    /*
-    * s = mutual exclusion in buffer
-    * n = consumable items in buffer
-    * e = empty spaces in buffer
-     */
+    //Semaforos para Velma
     public static Semaphore sIntro = new Semaphore(1);
     public static Semaphore nIntro = new Semaphore(0);
     public static Semaphore eIntro;
@@ -80,14 +76,59 @@ public class Interface extends javax.swing.JFrame {
     public static Semaphore nPlottwist = new Semaphore(0);
     public static Semaphore ePlottwist;
 
-    //Inicializando Threads con valores bases
+    //Inicializando Threads de Velma con valores bases
     ProductorIntro tIntro = new ProductorIntro(1, "Intro", 1);
     ProductorCreditos tCreditos = new ProductorCreditos(1, "Creditos", 1);
     ProductorInicio tInicio = new ProductorInicio(1, "Inicio", 1);
-
     ProductorCierre tCierre = new ProductorCierre(1, "Cierre", 1);
     ProductorPlottwist tPlottwist = new ProductorPlottwist(1, "Plot Twist", 1);
-    Ensamblador tEnsamblador = new Ensamblador(1, "Ensamblador", 1, 2);
+    Ensamblador tEnsamblador = new Ensamblador(1, "Ensamblador", 1);
+    
+    
+    //RICK&MORTY
+    //Buffers para RM
+    public static String[] bIntroRM;
+    public static String[] bCreditosRM;
+    public static String[] bInicioRM;
+    public static String[] bCierreRM;
+    public static String[] bPlottwistRM;
+
+    //In/out para RM
+    public static int inIntroRM = 0;
+    public static int outIntroRM = 0;
+    public static int inCreditosRM = 0;
+    public static int outCreditosRM = 0;
+    public static int inInicioRM = 0;
+    public static int outInicioRM = 0;
+    public static int inCierreRM = 0;
+    public static int outCierreRM = 0;
+    public static int inPlottwistRM = 0;
+    public static int outPlottwistRM = 0;
+
+    //Semaforos para RM
+    public static Semaphore sIntroRM = new Semaphore(1);
+    public static Semaphore nIntroRM = new Semaphore(0);
+    public static Semaphore eIntroRM;
+    public static Semaphore sCreditosRM = new Semaphore(1);
+    public static Semaphore nCreditosRM = new Semaphore(0);
+    public static Semaphore eCreditosRM;
+    public static Semaphore sInicioRM = new Semaphore(1);
+    public static Semaphore nInicioRM = new Semaphore(0);
+    public static Semaphore eInicioRM;
+    public static Semaphore sCierreRM = new Semaphore(1);
+    public static Semaphore nCierreRM = new Semaphore(0);
+    public static Semaphore eCierreRM;
+    public static Semaphore sPlottwistRM = new Semaphore(1);
+    public static Semaphore nPlottwistRM = new Semaphore(0);
+    public static Semaphore ePlottwistRM;
+
+    //Inicializando Threads de RM con valores bases
+    ProductorIntro tIntroRM = new ProductorIntro(1, "Intro", 1);
+    ProductorCreditos tCreditosRM = new ProductorCreditos(1, "Creditos", 1);
+    ProductorInicio tInicioRM = new ProductorInicio(1, "Inicio", 1);
+    ProductorCierre tCierreRM = new ProductorCierre(1, "Cierre", 1);
+    ProductorPlottwist tPlottwistRM = new ProductorPlottwist(1, "Plot Twist", 1);
+    Ensamblador tEnsambladorRM = new Ensamblador(1, "Ensamblador", 1);
 
     public Interface() {
         initComponents();
@@ -113,6 +154,12 @@ public class Interface extends javax.swing.JFrame {
             velmaInicio.setText(productoresSplit[2]);
             velmaCierre.setText(productoresSplit[3]);
             velmaPlottwist.setText(productoresSplit[4]);
+            
+            rmIntro.setText(productoresSplit[0]);
+            rmCreditos.setText(productoresSplit[1]);
+            rmInicio.setText(productoresSplit[2]);
+            rmCierre.setText(productoresSplit[3]);
+            rmPlottwist.setText(productoresSplit[4]);
 
             tIntro.setNumeroDeProductores(Integer.parseInt(velmaIntro.getText()));
             tCreditos.setNumeroDeProductores(Integer.parseInt(velmaCreditos.getText()));
@@ -1405,7 +1452,7 @@ public class Interface extends javax.swing.JFrame {
         tInicio.setTextField(velmaInventarioInicioDisponible);
         tCierre.setTextField(velmaInventarioCierreDisponible);
         tPlottwist.setTextField(velmaInventarioPlottwistDisponible);
-
+        
         tIntro.start();
         tCreditos.start();
         tInicio.start();

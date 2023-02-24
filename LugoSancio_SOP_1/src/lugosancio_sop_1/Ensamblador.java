@@ -39,9 +39,8 @@ public class Ensamblador extends Thread {
 
     String nombre;
 
-    public Ensamblador(int numeroProductores, String nombre, int duracionDiaEnSegundos, int cantidadDeDiasEntreLanzamientos) {
+    public Ensamblador(int numeroProductores, String nombre, int duracionDiaEnSegundos) {
         this.numeroDeProductores = numeroProductores;
-        this.cantidadDeDiasEntreLanzamientos = cantidadDeDiasEntreLanzamientos;
         this.nombre = nombre;
         this.duracionDiaEnSegundos = duracionDiaEnSegundos;
     }
