@@ -58,6 +58,7 @@ public class Ensamblador extends Thread {
                 nIntro.acquire();
                 sIntro.acquire();
                 w = LugoSancio_SOP_1.take(Interface.bIntro, Interface.driveIntro, Interface.outIntro);
+                Interface.outIntro = (Interface.outIntro+1)%Interface.kIntro;
                 sIntro.release();
                 eIntro.release();
                 nuevoCapitulo = nuevoCapitulo.concat(w);
@@ -66,6 +67,7 @@ public class Ensamblador extends Thread {
                 nInicio.acquire();
                 sInicio.acquire();
                 w = LugoSancio_SOP_1.take(Interface.bInicio, Interface.driveInicio, Interface.outInicio);
+                Interface.outInicio = (Interface.outInicio+1)%Interface.kInicio;
                 sInicio.release();
                 eInicio.release();
                 nuevoCapitulo = nuevoCapitulo.concat(w);
@@ -75,6 +77,7 @@ public class Ensamblador extends Thread {
                     nPlottwist.acquire();
                     sPlottwist.acquire();
                     w = LugoSancio_SOP_1.take(Interface.bPlottwist, Interface.drivePlottwist, Interface.outPlottwist);
+                    Interface.outPlottwist = (Interface.outPlottwist+1)%Interface.kPlottwist;
                     sPlottwist.release();
                     ePlottwist.release();
                     nuevoCapitulo = nuevoCapitulo.concat(w);
@@ -84,6 +87,7 @@ public class Ensamblador extends Thread {
                 nCierre.acquire();
                 sCierre.acquire();
                 w = LugoSancio_SOP_1.take(Interface.bCierre, Interface.driveCierre, Interface.outCierre);
+                Interface.outCierre = (Interface.outCierre+1)%Interface.kCierre;
                 sCierre.release();
                 eCierre.release();
                 nuevoCapitulo = nuevoCapitulo.concat(w);
@@ -92,6 +96,7 @@ public class Ensamblador extends Thread {
                 nCreditos.acquire();
                 sCreditos.acquire();
                 w = LugoSancio_SOP_1.take(Interface.bCreditos, Interface.driveCreditos, Interface.outCreditos);
+                Interface.outCreditos = (Interface.outCreditos+1)%Interface.kCreditos;
                 sCreditos.release();
                 eCreditos.release();
                 nuevoCapitulo = nuevoCapitulo.concat(w);
