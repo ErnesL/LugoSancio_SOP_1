@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Interface;
+package lugosancio_sop_1;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -34,28 +34,60 @@ public class Interface extends javax.swing.JFrame {
     static int dias = 0;
 
     //Drive
-    public static int driveIntro = 30;
-    public static int driveCreditos = 25;
-    public static int driveInicio = 50;
-    public static int driveCierre = 55;
-    public static int drivePlottwist = 40;
+    public static int driveIntro = 10;
+    public static int driveCreditos = 5;
+    public static int driveInicio = 5;
+    public static int driveCierre = 5;
+    public static int drivePlottwist = 5;
 
-    public static int inventarioIntro = 0;
-    public static int inventarioCreditos = 0;
-    public static int inventarioInicio = 0;
-    public static int inventarioCierre = 0;
-    public static int inventarioPlottwist = 0;
+    //Buffers
+    public static String[] bIntro;
+    public static String[] bCreditos;
+    public static String[] bInicio;
+    public static String[] bCierre;
+    public static String[] bPlottwist;
 
-    //Semaphore
-    Semaphore sem = new Semaphore(8);
+    //In/out
+    public static int inIntro = 0;
+    public static int outIntro = 0;
+    public static int inCreditos = 0;
+    public static int outCreditos = 0;
+    public static int inInicio = 0;
+    public static int outInicio = 0;
+    public static int inCierre = 0;
+    public static int outCierre = 0;
+    public static int inPlottwist = 0;
+    public static int outPlottwist = 0;
 
-    //Threads
-    ProductorIntro tIntro = new ProductorIntro(sem, 1, "Intro", duracionDiaEnSegundos);
-    ProductorCreditos tCreditos = new ProductorCreditos(sem, 1, "Creditos", duracionDiaEnSegundos);
-    ProductorInicio tInicio = new ProductorInicio(sem, 1, "Inicio", duracionDiaEnSegundos);
-    ProductorCierre tCierre = new ProductorCierre(sem, 1, "Cierre", duracionDiaEnSegundos);
-    ProductorPlottwist tPlottwist = new ProductorPlottwist(sem, 1, "Plottwist", duracionDiaEnSegundos);
-    Ensamblador tEnsamblador = new Ensamblador(sem, 1, "Ensamblador", duracionDiaEnSegundos);
+    /*
+    * s = mutual exclusion in buffer
+    * n = consumable items in buffer
+    * e = empty spaces in buffer
+     */
+    public static Semaphore sIntro = new Semaphore(1);
+    public static Semaphore nIntro = new Semaphore(0);
+    public static Semaphore eIntro;
+    public static Semaphore sCreditos = new Semaphore(1);
+    public static Semaphore nCreditos = new Semaphore(0);
+    public static Semaphore eCreditos;
+    public static Semaphore sInicio = new Semaphore(1);
+    public static Semaphore nInicio = new Semaphore(0);
+    public static Semaphore eInicio;
+    public static Semaphore sCierre = new Semaphore(1);
+    public static Semaphore nCierre = new Semaphore(0);
+    public static Semaphore eCierre;
+    public static Semaphore sPlottwist = new Semaphore(1);
+    public static Semaphore nPlottwist = new Semaphore(0);
+    public static Semaphore ePlottwist;
+
+    //Inicializando Threads con valores bases
+    ProductorIntro tIntro = new ProductorIntro(1, "Intro", 1);
+    ProductorCreditos tCreditos = new ProductorCreditos(1, "Creditos", 1);
+    ProductorInicio tInicio = new ProductorInicio(1, "Inicio", 1);
+
+    ProductorCierre tCierre = new ProductorCierre(1, "Cierre", 1);
+    ProductorPlottwist tPlottwist = new ProductorPlottwist(1, "Plot Twist", 1);
+    Ensamblador tEnsamblador = new Ensamblador(1, "Ensamblador", 1, 2);
 
     public Interface() {
         initComponents();
@@ -82,6 +114,16 @@ public class Interface extends javax.swing.JFrame {
             velmaCierre.setText(productoresSplit[3]);
             velmaPlottwist.setText(productoresSplit[4]);
 
+            tIntro.setNumeroDeProductores(Integer.parseInt(velmaIntro.getText()));
+            tCreditos.setNumeroDeProductores(Integer.parseInt(velmaCreditos.getText()));
+            tInicio.setNumeroDeProductores(Integer.parseInt(velmaInicio.getText()));
+            tCierre.setNumeroDeProductores(Integer.parseInt(velmaCierre.getText()));
+            tPlottwist.setNumeroDeProductores(Integer.parseInt(velmaPlottwist.getText()));
+
+            //Ensamblador
+            velmaEnsambladores.setText(dataSplit[4]);
+            tEnsamblador.setNumeroDeProductores(Integer.parseInt(velmaEnsambladores.getText()));
+
             //Drive
             driveIntro = Integer.parseInt(almacenamientoSplit[0]);
             driveCreditos = Integer.parseInt(almacenamientoSplit[1]);
@@ -89,9 +131,30 @@ public class Interface extends javax.swing.JFrame {
             driveCierre = Integer.parseInt(almacenamientoSplit[3]);
             drivePlottwist = Integer.parseInt(almacenamientoSplit[4]);
 
-            //Ensamblador
-            velmaEnsambladores.setText(dataSplit[4]);
-            tEnsamblador.setNumeroDeProductores(Integer.parseInt(velmaEnsambladores.getText()));
+            bIntro = new String[driveIntro];
+            bCreditos = new String[driveCreditos];
+            bInicio = new String[driveInicio];
+            bCierre = new String[driveCierre];
+            bPlottwist = new String[drivePlottwist];
+
+            eIntro = new Semaphore(driveIntro);
+            eCreditos = new Semaphore(driveCreditos);
+            eInicio = new Semaphore(driveInicio);
+            eCierre = new Semaphore(driveCierre);
+            ePlottwist = new Semaphore(drivePlottwist);
+
+            velmaInventarioIntroMaximo.setText(Integer.toString(driveIntro));
+            velmaInventarioCreditosMaximo.setText(Integer.toString(driveCreditos));
+            velmaInventarioInicioMaximo.setText(Integer.toString(driveInicio));
+            velmaInventarioCierreMaximo.setText(Integer.toString(driveCierre));
+            velmaInventarioPlottwistMaximo.setText(Integer.toString(drivePlottwist));
+
+            //InventarioDisponible
+            velmaInventarioIntroDisponible.setText(Integer.toString(nIntro.availablePermits()));
+            velmaInventarioCreditosDisponible.setText(Integer.toString(nCreditos.availablePermits()));
+            velmaInventarioInicioDisponible.setText(Integer.toString(nInicio.availablePermits()));
+            velmaInventarioCierreDisponible.setText(Integer.toString(nCierre.availablePermits()));
+            velmaInventarioPlottwistDisponible.setText(Integer.toString(nPlottwist.availablePermits()));
 
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
@@ -136,10 +199,10 @@ public class Interface extends javax.swing.JFrame {
         jLabel20 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
         velmaEnsambladores = new javax.swing.JTextField();
-        velmaInventarioIntro = new javax.swing.JTextField();
-        velmaInventarioCreditos = new javax.swing.JTextField();
-        velmaInventarioInicio = new javax.swing.JTextField();
-        velmaInventarioCierre = new javax.swing.JTextField();
+        velmaInventarioIntroDisponible = new javax.swing.JTextField();
+        velmaInventarioCreditosDisponible = new javax.swing.JTextField();
+        velmaInventarioInicioDisponible = new javax.swing.JTextField();
+        velmaInventarioCierreDisponible = new javax.swing.JTextField();
         jLabel22 = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
@@ -152,7 +215,7 @@ public class Interface extends javax.swing.JFrame {
         rmInventarioInicio = new javax.swing.JTextField();
         rmInventarioCierre = new javax.swing.JTextField();
         jLabel28 = new javax.swing.JLabel();
-        velmaInventarioPlottwist = new javax.swing.JTextField();
+        velmaInventarioPlottwistDisponible = new javax.swing.JTextField();
         jLabel29 = new javax.swing.JLabel();
         velmoCapsAcabadosEnUltimoLote = new javax.swing.JTextField();
         jLabel30 = new javax.swing.JLabel();
@@ -221,6 +284,13 @@ public class Interface extends javax.swing.JFrame {
         rmEnsambladoresDown = new javax.swing.JButton();
         start = new javax.swing.JToggleButton();
         config = new javax.swing.JToggleButton();
+        velmaInventarioIntroMaximo = new javax.swing.JTextField();
+        velmaInventarioCreditosMaximo = new javax.swing.JTextField();
+        velmaInventarioInicioMaximo = new javax.swing.JTextField();
+        velmaInventarioCierreMaximo = new javax.swing.JTextField();
+        velmaInventarioPlottwistMaximo = new javax.swing.JTextField();
+        jLabel52 = new javax.swing.JLabel();
+        jLabel53 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -363,19 +433,19 @@ public class Interface extends javax.swing.JFrame {
         jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 370, -1, -1));
 
         jLabel17.setText("1. INTRO");
-        jPanel1.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 260, -1, -1));
+        jPanel1.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 260, -1, -1));
 
         jLabel18.setText("2. CREDITOS");
-        jPanel1.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 280, -1, -1));
+        jPanel1.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 280, -1, -1));
 
         jLabel19.setText("3. INICIO");
-        jPanel1.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 300, -1, -1));
+        jPanel1.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 300, -1, -1));
 
         jLabel20.setText("4. CIERRE");
-        jPanel1.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 320, -1, -1));
+        jPanel1.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 320, -1, -1));
 
         jLabel21.setText("5. PLOT TWIST");
-        jPanel1.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 340, -1, -1));
+        jPanel1.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 340, -1, -1));
 
         velmaEnsambladores.setEditable(false);
         velmaEnsambladores.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -386,41 +456,41 @@ public class Interface extends javax.swing.JFrame {
         });
         jPanel1.add(velmaEnsambladores, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 370, 40, -1));
 
-        velmaInventarioIntro.setEditable(false);
-        velmaInventarioIntro.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        velmaInventarioIntro.addActionListener(new java.awt.event.ActionListener() {
+        velmaInventarioIntroDisponible.setEditable(false);
+        velmaInventarioIntroDisponible.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        velmaInventarioIntroDisponible.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                velmaInventarioIntroActionPerformed(evt);
+                velmaInventarioIntroDisponibleActionPerformed(evt);
             }
         });
-        jPanel1.add(velmaInventarioIntro, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 260, 40, -1));
+        jPanel1.add(velmaInventarioIntroDisponible, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 260, 40, -1));
 
-        velmaInventarioCreditos.setEditable(false);
-        velmaInventarioCreditos.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        velmaInventarioCreditos.addActionListener(new java.awt.event.ActionListener() {
+        velmaInventarioCreditosDisponible.setEditable(false);
+        velmaInventarioCreditosDisponible.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        velmaInventarioCreditosDisponible.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                velmaInventarioCreditosActionPerformed(evt);
+                velmaInventarioCreditosDisponibleActionPerformed(evt);
             }
         });
-        jPanel1.add(velmaInventarioCreditos, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 280, 40, -1));
+        jPanel1.add(velmaInventarioCreditosDisponible, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 280, 40, -1));
 
-        velmaInventarioInicio.setEditable(false);
-        velmaInventarioInicio.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        velmaInventarioInicio.addActionListener(new java.awt.event.ActionListener() {
+        velmaInventarioInicioDisponible.setEditable(false);
+        velmaInventarioInicioDisponible.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        velmaInventarioInicioDisponible.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                velmaInventarioInicioActionPerformed(evt);
+                velmaInventarioInicioDisponibleActionPerformed(evt);
             }
         });
-        jPanel1.add(velmaInventarioInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 300, 40, -1));
+        jPanel1.add(velmaInventarioInicioDisponible, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 300, 40, -1));
 
-        velmaInventarioCierre.setEditable(false);
-        velmaInventarioCierre.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        velmaInventarioCierre.addActionListener(new java.awt.event.ActionListener() {
+        velmaInventarioCierreDisponible.setEditable(false);
+        velmaInventarioCierreDisponible.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        velmaInventarioCierreDisponible.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                velmaInventarioCierreActionPerformed(evt);
+                velmaInventarioCierreDisponibleActionPerformed(evt);
             }
         });
-        jPanel1.add(velmaInventarioCierre, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 320, 40, -1));
+        jPanel1.add(velmaInventarioCierreDisponible, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 320, 40, -1));
 
         jLabel22.setText("INVENTARIO");
         jPanel1.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 230, -1, -1));
@@ -485,17 +555,17 @@ public class Interface extends javax.swing.JFrame {
         });
         jPanel1.add(rmInventarioCierre, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 320, 40, -1));
 
-        jLabel28.setText("INVENTARIO");
-        jPanel1.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 230, -1, -1));
+        jLabel28.setText("ACTUAL");
+        jPanel1.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 250, -1, -1));
 
-        velmaInventarioPlottwist.setEditable(false);
-        velmaInventarioPlottwist.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        velmaInventarioPlottwist.addActionListener(new java.awt.event.ActionListener() {
+        velmaInventarioPlottwistDisponible.setEditable(false);
+        velmaInventarioPlottwistDisponible.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        velmaInventarioPlottwistDisponible.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                velmaInventarioPlottwistActionPerformed(evt);
+                velmaInventarioPlottwistDisponibleActionPerformed(evt);
             }
         });
-        jPanel1.add(velmaInventarioPlottwist, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 340, 40, -1));
+        jPanel1.add(velmaInventarioPlottwistDisponible, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 340, 40, -1));
 
         jLabel29.setText("CANTIDAD DE CAPS TERMINADOS");
         jPanel1.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 400, -1, -1));
@@ -885,6 +955,57 @@ public class Interface extends javax.swing.JFrame {
         });
         jPanel1.add(config, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 20, -1, -1));
 
+        velmaInventarioIntroMaximo.setEditable(false);
+        velmaInventarioIntroMaximo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        velmaInventarioIntroMaximo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                velmaInventarioIntroMaximoActionPerformed(evt);
+            }
+        });
+        jPanel1.add(velmaInventarioIntroMaximo, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 260, 40, -1));
+
+        velmaInventarioCreditosMaximo.setEditable(false);
+        velmaInventarioCreditosMaximo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        velmaInventarioCreditosMaximo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                velmaInventarioCreditosMaximoActionPerformed(evt);
+            }
+        });
+        jPanel1.add(velmaInventarioCreditosMaximo, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 280, 40, -1));
+
+        velmaInventarioInicioMaximo.setEditable(false);
+        velmaInventarioInicioMaximo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        velmaInventarioInicioMaximo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                velmaInventarioInicioMaximoActionPerformed(evt);
+            }
+        });
+        jPanel1.add(velmaInventarioInicioMaximo, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 300, 40, -1));
+
+        velmaInventarioCierreMaximo.setEditable(false);
+        velmaInventarioCierreMaximo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        velmaInventarioCierreMaximo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                velmaInventarioCierreMaximoActionPerformed(evt);
+            }
+        });
+        jPanel1.add(velmaInventarioCierreMaximo, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 320, 40, -1));
+
+        velmaInventarioPlottwistMaximo.setEditable(false);
+        velmaInventarioPlottwistMaximo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        velmaInventarioPlottwistMaximo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                velmaInventarioPlottwistMaximoActionPerformed(evt);
+            }
+        });
+        jPanel1.add(velmaInventarioPlottwistMaximo, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 340, 40, -1));
+
+        jLabel52.setText("INVENTARIO");
+        jPanel1.add(jLabel52, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 230, -1, -1));
+
+        jLabel53.setText("MAXIMO");
+        jPanel1.add(jLabel53, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 250, -1, -1));
+
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 880, 710));
 
         pack();
@@ -934,21 +1055,20 @@ public class Interface extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_velmaEnsambladoresActionPerformed
 
-    private void velmaInventarioIntroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_velmaInventarioIntroActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_velmaInventarioIntroActionPerformed
+    private void velmaInventarioIntroDisponibleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_velmaInventarioIntroDisponibleActionPerformed
+    }//GEN-LAST:event_velmaInventarioIntroDisponibleActionPerformed
 
-    private void velmaInventarioCreditosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_velmaInventarioCreditosActionPerformed
+    private void velmaInventarioCreditosDisponibleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_velmaInventarioCreditosDisponibleActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_velmaInventarioCreditosActionPerformed
+    }//GEN-LAST:event_velmaInventarioCreditosDisponibleActionPerformed
 
-    private void velmaInventarioInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_velmaInventarioInicioActionPerformed
+    private void velmaInventarioInicioDisponibleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_velmaInventarioInicioDisponibleActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_velmaInventarioInicioActionPerformed
+    }//GEN-LAST:event_velmaInventarioInicioDisponibleActionPerformed
 
-    private void velmaInventarioCierreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_velmaInventarioCierreActionPerformed
+    private void velmaInventarioCierreDisponibleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_velmaInventarioCierreDisponibleActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_velmaInventarioCierreActionPerformed
+    }//GEN-LAST:event_velmaInventarioCierreDisponibleActionPerformed
 
     private void rmInventarioPlottwistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rmInventarioPlottwistActionPerformed
         // TODO add your handling code here:
@@ -970,9 +1090,9 @@ public class Interface extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_rmInventarioCierreActionPerformed
 
-    private void velmaInventarioPlottwistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_velmaInventarioPlottwistActionPerformed
+    private void velmaInventarioPlottwistDisponibleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_velmaInventarioPlottwistDisponibleActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_velmaInventarioPlottwistActionPerformed
+    }//GEN-LAST:event_velmaInventarioPlottwistDisponibleActionPerformed
 
     private void velmoCapsAcabadosEnUltimoLoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_velmoCapsAcabadosEnUltimoLoteActionPerformed
         // TODO add your handling code here:
@@ -1114,6 +1234,18 @@ public class Interface extends javax.swing.JFrame {
             driveCierre = Integer.parseInt(almacenamientoSplit[3]);
             drivePlottwist = Integer.parseInt(almacenamientoSplit[4]);
 
+            bIntro = new String[driveIntro];
+            bCreditos = new String[driveCreditos];
+            bInicio = new String[driveInicio];
+            bCierre = new String[driveCierre];
+            bPlottwist = new String[drivePlottwist];
+
+            eIntro = new Semaphore(driveIntro);
+            eCreditos = new Semaphore(driveCreditos);
+            eInicio = new Semaphore(driveInicio);
+            eCierre = new Semaphore(driveCierre);
+            ePlottwist = new Semaphore(drivePlottwist);
+
             //Ensamblador
             velmaEnsambladores.setText(dataSplit[4]);
             tEnsamblador.setNumeroDeProductores(Integer.parseInt(velmaEnsambladores.getText()));
@@ -1128,38 +1260,64 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_configActionPerformed
 
     private void velmaIntroUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_velmaIntroUpActionPerformed
-        int holderInt = Integer.parseInt(velmaIntro.getText());
-        holderInt++;
-        velmaIntro.setText(Integer.toString(holderInt));
-        tIntro.setNumeroDeProductores(holderInt);
+        if (Integer.parseInt(velmaIntro.getText()) + Integer.parseInt(velmaCreditos.getText()) + Integer.parseInt(velmaInicio.getText()) + Integer.parseInt(velmaCierre.getText()) + Integer.parseInt(velmaPlottwist.getText()) + Integer.parseInt(velmaEnsambladores.getText()) == 11) {
+            JOptionPane.showMessageDialog(null, "La cantidad maxima de productores no puede ser mas de 11");
+
+        } else {
+
+            int holderInt = Integer.parseInt(velmaIntro.getText());
+            holderInt++;
+            velmaIntro.setText(Integer.toString(holderInt));
+            tIntro.setNumeroDeProductores(holderInt);
+        }
     }//GEN-LAST:event_velmaIntroUpActionPerformed
 
     private void velmaCreditosUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_velmaCreditosUpActionPerformed
-        int holderInt = Integer.parseInt(velmaCreditos.getText());
-        holderInt++;
-        velmaCreditos.setText(Integer.toString(holderInt));
-        tCreditos.setNumeroDeProductores(holderInt);
+        if (Integer.parseInt(velmaIntro.getText()) + Integer.parseInt(velmaCreditos.getText()) + Integer.parseInt(velmaInicio.getText()) + Integer.parseInt(velmaCierre.getText()) + Integer.parseInt(velmaPlottwist.getText()) + Integer.parseInt(velmaEnsambladores.getText()) == 11) {
+            JOptionPane.showMessageDialog(null, "La cantidad maxima de productores no puede ser mas de 11");
+
+        } else {
+            int holderInt = Integer.parseInt(velmaCreditos.getText());
+            holderInt++;
+            velmaCreditos.setText(Integer.toString(holderInt));
+            tCreditos.setNumeroDeProductores(holderInt);
+        }
     }//GEN-LAST:event_velmaCreditosUpActionPerformed
 
     private void velmaInicioUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_velmaInicioUpActionPerformed
-        int holderInt = Integer.parseInt(velmaInicio.getText());
-        holderInt++;
-        velmaInicio.setText(Integer.toString(holderInt));
-        tInicio.setNumeroDeProductores(holderInt);
+        if (Integer.parseInt(velmaIntro.getText()) + Integer.parseInt(velmaCreditos.getText()) + Integer.parseInt(velmaInicio.getText()) + Integer.parseInt(velmaCierre.getText()) + Integer.parseInt(velmaPlottwist.getText()) + Integer.parseInt(velmaEnsambladores.getText()) == 11) {
+            JOptionPane.showMessageDialog(null, "La cantidad maxima de productores no puede ser mas de 11");
+
+        } else {
+            int holderInt = Integer.parseInt(velmaInicio.getText());
+            holderInt++;
+            velmaInicio.setText(Integer.toString(holderInt));
+            tInicio.setNumeroDeProductores(holderInt);
+        }
     }//GEN-LAST:event_velmaInicioUpActionPerformed
 
     private void velmaCierreUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_velmaCierreUpActionPerformed
-        int holderInt = Integer.parseInt(velmaCierre.getText());
-        holderInt++;
-        velmaCierre.setText(Integer.toString(holderInt));
-        tCierre.setNumeroDeProductores(holderInt);
+        if (Integer.parseInt(velmaIntro.getText()) + Integer.parseInt(velmaCreditos.getText()) + Integer.parseInt(velmaInicio.getText()) + Integer.parseInt(velmaCierre.getText()) + Integer.parseInt(velmaPlottwist.getText()) + Integer.parseInt(velmaEnsambladores.getText()) == 11) {
+            JOptionPane.showMessageDialog(null, "La cantidad maxima de productores no puede ser mas de 11");
+
+        } else {
+            int holderInt = Integer.parseInt(velmaCierre.getText());
+            holderInt++;
+            velmaCierre.setText(Integer.toString(holderInt));
+            tCierre.setNumeroDeProductores(holderInt);
+        }
     }//GEN-LAST:event_velmaCierreUpActionPerformed
 
     private void velmaPlottwistUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_velmaPlottwistUpActionPerformed
-        int holderInt = Integer.parseInt(velmaPlottwist.getText());
-        holderInt++;
-        velmaPlottwist.setText(Integer.toString(holderInt));
-        tPlottwist.setNumeroDeProductores(holderInt);
+        if (Integer.parseInt(velmaIntro.getText()) + Integer.parseInt(velmaCreditos.getText()) + Integer.parseInt(velmaInicio.getText()) + Integer.parseInt(velmaCierre.getText()) + Integer.parseInt(velmaPlottwist.getText()) + Integer.parseInt(velmaEnsambladores.getText()) == 11) {
+            JOptionPane.showMessageDialog(null, "La cantidad maxima de productores no puede ser mas de 11");
+
+        } else {
+            int holderInt = Integer.parseInt(velmaPlottwist.getText());
+            holderInt++;
+            velmaPlottwist.setText(Integer.toString(holderInt));
+            tPlottwist.setNumeroDeProductores(holderInt);
+        }
     }//GEN-LAST:event_velmaPlottwistUpActionPerformed
 
     private void velmaIntroDownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_velmaIntroDownActionPerformed
@@ -1229,15 +1387,54 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_velmaEnsambladoresDownActionPerformed
 
     private void velmaEnsambladoresUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_velmaEnsambladoresUpActionPerformed
-        int holderInt = Integer.parseInt(velmaEnsambladores.getText());
-        holderInt++;
-        velmaEnsambladores.setText(Integer.toString(holderInt));
-        tEnsamblador.setNumeroDeProductores(holderInt);
+        if (Integer.parseInt(velmaIntro.getText()) + Integer.parseInt(velmaCreditos.getText()) + Integer.parseInt(velmaInicio.getText()) + Integer.parseInt(velmaCierre.getText()) + Integer.parseInt(velmaPlottwist.getText()) + Integer.parseInt(velmaEnsambladores.getText()) == 11) {
+            JOptionPane.showMessageDialog(null, "La cantidad maxima de productores no puede ser mas de 11");
+
+        } else {
+            int holderInt = Integer.parseInt(velmaEnsambladores.getText());
+            holderInt++;
+            velmaEnsambladores.setText(Integer.toString(holderInt));
+            tEnsamblador.setNumeroDeProductores(holderInt);
+        }
     }//GEN-LAST:event_velmaEnsambladoresUpActionPerformed
 
     private void startActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startActionPerformed
 
+        tIntro.setTextField(velmaInventarioIntroDisponible);
+        tCreditos.setTextField(velmaInventarioCreditosDisponible);
+        tInicio.setTextField(velmaInventarioInicioDisponible);
+        tCierre.setTextField(velmaInventarioCierreDisponible);
+        tPlottwist.setTextField(velmaInventarioPlottwistDisponible);
+
+        tIntro.start();
+        tCreditos.start();
+        tInicio.start();
+        tCierre.start();
+        tPlottwist.start();
+        tEnsamblador.start();
+
+
     }//GEN-LAST:event_startActionPerformed
+
+    private void velmaInventarioIntroMaximoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_velmaInventarioIntroMaximoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_velmaInventarioIntroMaximoActionPerformed
+
+    private void velmaInventarioCreditosMaximoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_velmaInventarioCreditosMaximoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_velmaInventarioCreditosMaximoActionPerformed
+
+    private void velmaInventarioInicioMaximoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_velmaInventarioInicioMaximoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_velmaInventarioInicioMaximoActionPerformed
+
+    private void velmaInventarioCierreMaximoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_velmaInventarioCierreMaximoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_velmaInventarioCierreMaximoActionPerformed
+
+    private void velmaInventarioPlottwistMaximoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_velmaInventarioPlottwistMaximoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_velmaInventarioPlottwistMaximoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1275,6 +1472,7 @@ public class Interface extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Interface().setVisible(true);
+
             }
         });
     }
@@ -1325,6 +1523,8 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel50;
     private javax.swing.JLabel jLabel51;
+    private javax.swing.JLabel jLabel52;
+    private javax.swing.JLabel jLabel53;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -1383,11 +1583,16 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JTextField velmaIntro;
     private javax.swing.JButton velmaIntroDown;
     private javax.swing.JButton velmaIntroUp;
-    private javax.swing.JTextField velmaInventarioCierre;
-    private javax.swing.JTextField velmaInventarioCreditos;
-    private javax.swing.JTextField velmaInventarioInicio;
-    private javax.swing.JTextField velmaInventarioIntro;
-    private javax.swing.JTextField velmaInventarioPlottwist;
+    private javax.swing.JTextField velmaInventarioCierreDisponible;
+    private javax.swing.JTextField velmaInventarioCierreMaximo;
+    private javax.swing.JTextField velmaInventarioCreditosDisponible;
+    private javax.swing.JTextField velmaInventarioCreditosMaximo;
+    private javax.swing.JTextField velmaInventarioInicioDisponible;
+    private javax.swing.JTextField velmaInventarioInicioMaximo;
+    public static javax.swing.JTextField velmaInventarioIntroDisponible;
+    private javax.swing.JTextField velmaInventarioIntroMaximo;
+    private javax.swing.JTextField velmaInventarioPlottwistDisponible;
+    private javax.swing.JTextField velmaInventarioPlottwistMaximo;
     private javax.swing.JTextField velmaPMActividad;
     private javax.swing.JTextField velmaPMFaltas;
     private javax.swing.JTextField velmaPMSalario;

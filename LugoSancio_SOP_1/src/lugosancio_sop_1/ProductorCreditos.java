@@ -5,14 +5,15 @@
  */
 package lugosancio_sop_1;
 
-import Interface.Interface;
+import static lugosancio_sop_1.Interface.eCreditos;
+import static lugosancio_sop_1.Interface.nCreditos;
+import static lugosancio_sop_1.Interface.sCreditos;
 import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JTextField;
 import lugosancio_sop_1.LugoSancio_SOP_1;
-import static lugosancio_sop_1.LugoSancio_SOP_1.sCreditos;
-import static lugosancio_sop_1.LugoSancio_SOP_1.nCreditos;
-import static lugosancio_sop_1.LugoSancio_SOP_1.eCreditos;
+
 
 /**
  *
@@ -25,12 +26,12 @@ public class ProductorCreditos extends Thread {
     int montoPorPagar = 0;
     int duracionDiaEnSegundos;
     int rendimiento = 1;
-    Semaphore sem;
     String nombre;
+    JTextField textField;
 
-    public ProductorCreditos(Semaphore sem, int numeroProductores, String nombre, int duracionDiaEnSegundos) {
+    public ProductorCreditos( int numeroProductores, String nombre, int duracionDiaEnSegundos) {
         this.numeroDeProductores = numeroProductores;
-        this.sem = sem;
+    
         this.nombre = nombre;
 
         this.duracionDiaEnSegundos = duracionDiaEnSegundos;
@@ -43,7 +44,7 @@ public class ProductorCreditos extends Thread {
         try {
             while (true) {
                 //se está creando la creditos
-                sleep(1000/numeroDeProductores);
+                sleep(duracionDiaEnSegundos*1000/numeroDeProductores);
                 //se revisa si hay espacio en el buffer
                 eCreditos.acquire();
                 //tiene que estar solito en el buffer
@@ -55,12 +56,17 @@ public class ProductorCreditos extends Thread {
                 //hay un item consumible más en N
                 nCreditos.release();
                 System.out.println("hay esta cantidad de creditos: " + nCreditos.availablePermits());
+                textField.setText(Integer.toString(nCreditos.availablePermits()));
             }
 
         } catch (InterruptedException ex) {
             Logger.getLogger(ProductorCreditos.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+    
+     public void setTextField(JTextField textField) {
+        this.textField = textField;
     }
 
 

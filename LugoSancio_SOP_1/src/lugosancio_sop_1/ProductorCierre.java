@@ -5,10 +5,15 @@
  */
 package lugosancio_sop_1;
 
-import Interface.Interface;
+import static lugosancio_sop_1.Interface.driveCierre;
+import static lugosancio_sop_1.Interface.eCierre;
+import static lugosancio_sop_1.Interface.nCierre;
+import static lugosancio_sop_1.Interface.sCierre;
+
 import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JTextField;
 import lugosancio_sop_1.LugoSancio_SOP_1;
 import static lugosancio_sop_1.LugoSancio_SOP_1.sCierre;
 import static lugosancio_sop_1.LugoSancio_SOP_1.nCierre;
@@ -27,6 +32,7 @@ public class ProductorCierre extends Thread {
     int rendimiento = 1;
     Semaphore sem;
     String nombre;
+    JTextField textField;
 
     public ProductorCierre(Semaphore sem, int numeroProductores, String nombre, int duracionDiaEnSegundos) {
         this.numeroDeProductores = numeroProductores;
@@ -34,6 +40,7 @@ public class ProductorCierre extends Thread {
         this.nombre = nombre;
 
         this.duracionDiaEnSegundos = duracionDiaEnSegundos;
+
     }
 
 //    @Override
@@ -58,13 +65,13 @@ public class ProductorCierre extends Thread {
 //
 //    }
     String cierreGenerico = "y a la final todos se murieron y nunca se encontró la gema del poder, FIN.\n";
-    
+
     @Override
     public void run() {
         try {
             while (true) {
                 //se está creando la cierre
-                sleep(1000/numeroDeProductores);
+                sleep(duracionDiaEnSegundos * 1000 / numeroDeProductores);
                 //se revisa si hay espacio en el buffer
                 eCierre.acquire();
                 //tiene que estar solito en el buffer
@@ -76,6 +83,7 @@ public class ProductorCierre extends Thread {
                 //hay un item consumible más en N
                 nCierre.release();
                 System.out.println("hay esta cantidad de cierres: " + nCierre.availablePermits());
+                textField.setText(Integer.toString(nCierre.availablePermits()));
             }
 
         } catch (InterruptedException ex) {
@@ -84,6 +92,9 @@ public class ProductorCierre extends Thread {
 
     }
 
+    public void setTextField(JTextField textField) {
+        this.textField = textField;
+    }
 
     public void setNumeroDeProductores(int numeroDeProductores) {
         this.numeroDeProductores = numeroDeProductores;
