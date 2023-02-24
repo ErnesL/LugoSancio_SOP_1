@@ -11,13 +11,16 @@ import static lugosancio_sop_1.Interface.sPlottwist;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextField;
+import static lugosancio_sop_1.Interface.ePlottwistRM;
+import static lugosancio_sop_1.Interface.nPlottwistRM;
+import static lugosancio_sop_1.Interface.sPlottwistRM;
 import lugosancio_sop_1.LugoSancio_SOP_1;
 
 /**
  *
  * @author ernes
  */
-public class ProductorPlottwist extends Thread {
+public class ProductorPlottwistRM extends Thread {
 
     int numeroDeProductores = 1;
     int sueldo = 7;
@@ -27,7 +30,7 @@ public class ProductorPlottwist extends Thread {
     String nombre;
     JTextField textField;
 
-    public ProductorPlottwist(int numeroProductores, String nombre, int duracionDiaEnSegundos) {
+    public ProductorPlottwistRM(int numeroProductores, String nombre, int duracionDiaEnSegundos) {
         this.numeroDeProductores = numeroProductores;
         this.nombre = nombre;
         this.duracionDiaEnSegundos = duracionDiaEnSegundos;
@@ -42,21 +45,21 @@ public class ProductorPlottwist extends Thread {
                 //se está creando la plottwist
                 sleep(duracionDiaEnSegundos * 2000 / numeroDeProductores);
                 //se revisa si hay espacio en el buffer
-                ePlottwist.acquire();
+                ePlottwistRM.acquire();
                 //tiene que estar solito en el buffer
-                sPlottwist.acquire();
+                sPlottwistRM.acquire();
                 //SECCION CRITICA
-                Interface.inPlottwist = LugoSancio_SOP_1.append(plottwistGenerico, Interface.bPlottwist, Interface.drivePlottwist, Interface.inPlottwist);
+                Interface.inPlottwistRM = LugoSancio_SOP_1.append(plottwistGenerico, Interface.bPlottwistRM, Interface.drivePlottwist, Interface.inPlottwistRM);
                 //ya salió de la sección crítica
-                sPlottwist.release();
+                sPlottwistRM.release();
                 //hay un item consumible más en N
-                nPlottwist.release();
-                textField.setText(Integer.toString(nPlottwist.availablePermits()));
+                nPlottwistRM.release();
+                textField.setText(Integer.toString(nPlottwistRM.availablePermits()));
                 montoPorPagar = montoPorPagar + sueldo * 24;
             }
 
         } catch (InterruptedException ex) {
-            Logger.getLogger(ProductorPlottwist.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProductorPlottwistRM.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }

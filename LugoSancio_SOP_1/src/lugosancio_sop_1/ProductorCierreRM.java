@@ -5,58 +5,64 @@
  */
 package lugosancio_sop_1;
 
-import static lugosancio_sop_1.Interface.ePlottwist;
-import static lugosancio_sop_1.Interface.nPlottwist;
-import static lugosancio_sop_1.Interface.sPlottwist;
+import static lugosancio_sop_1.Interface.driveCierre;
+import static lugosancio_sop_1.Interface.eCierre;
+import static lugosancio_sop_1.Interface.nCierre;
+import static lugosancio_sop_1.Interface.sCierre;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextField;
+import static lugosancio_sop_1.Interface.eCierreRM;
+import static lugosancio_sop_1.Interface.nCierreRM;
+import static lugosancio_sop_1.Interface.sCierreRM;
 import lugosancio_sop_1.LugoSancio_SOP_1;
 
 /**
  *
  * @author ernes
  */
-public class ProductorPlottwist extends Thread {
+public class ProductorCierreRM extends Thread {
 
     int numeroDeProductores = 1;
-    int sueldo = 7;
+    int sueldo = 8;
     int montoPorPagar = 0;
     int duracionDiaEnSegundos;
-    int rendimiento = 1;
+    int rendimiento = 2;
     String nombre;
     JTextField textField;
 
-    public ProductorPlottwist(int numeroProductores, String nombre, int duracionDiaEnSegundos) {
+    public ProductorCierreRM(int numeroProductores, String nombre, int duracionDiaEnSegundos) {
         this.numeroDeProductores = numeroProductores;
         this.nombre = nombre;
         this.duracionDiaEnSegundos = duracionDiaEnSegundos;
+
     }
 
-    String plottwistGenerico = "pero resulta que.... el malo todo este tiempo ha sido Miguel Mouse!\n";
+    String cierreGenerico = "y a la final todos se murieron y nunca se encontró la gema del poder, FIN.\n";
 
     @Override
     public void run() {
         try {
             while (true) {
-                //se está creando la plottwist
+                //se está creando la cierre
                 sleep(duracionDiaEnSegundos * 2000 / numeroDeProductores);
                 //se revisa si hay espacio en el buffer
-                ePlottwist.acquire();
+                eCierreRM.acquire();
                 //tiene que estar solito en el buffer
-                sPlottwist.acquire();
+                sCierreRM.acquire();
                 //SECCION CRITICA
-                Interface.inPlottwist = LugoSancio_SOP_1.append(plottwistGenerico, Interface.bPlottwist, Interface.drivePlottwist, Interface.inPlottwist);
+                Interface.inCierreRM = LugoSancio_SOP_1.append(cierreGenerico, Interface.bCierreRM, driveCierre, Interface.inCierreRM);
                 //ya salió de la sección crítica
-                sPlottwist.release();
+                sCierreRM.release();
                 //hay un item consumible más en N
-                nPlottwist.release();
-                textField.setText(Integer.toString(nPlottwist.availablePermits()));
-                montoPorPagar = montoPorPagar + sueldo * 24;
+                nCierreRM.release();
+                textField.setText(Integer.toString(nCierreRM.availablePermits()));
+                montoPorPagar = montoPorPagar + sueldo*24;
             }
 
         } catch (InterruptedException ex) {
-            Logger.getLogger(ProductorPlottwist.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProductorCierreRM.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -69,7 +75,7 @@ public class ProductorPlottwist extends Thread {
         this.numeroDeProductores = numeroDeProductores;
     }
 
-    public int getSueldo() {
+    public double getSueldo() {
         return sueldo;
     }
 
@@ -92,5 +98,4 @@ public class ProductorPlottwist extends Thread {
     public void setMontoPorPagar(int montoPorPagar) {
         this.montoPorPagar = montoPorPagar;
     }
-
 }
