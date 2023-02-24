@@ -5,6 +5,7 @@
  */
 package lugosancio_sop_1;
 
+import java.util.concurrent.Semaphore;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 import static lugosancio_sop_1.Interface.sCountdown;
@@ -19,19 +20,44 @@ public class ProjectManager extends Thread {
     int diasRestantes;
     int numDeCedula;
     boolean seAcaboElDia;
+    int duracionDiaEnSegundos;
     
-    public ProjectManager(int diasRestantes, int numDeCedula) {
+    public static Semaphore sem = new Semaphore(0);
+    
+    public class Hilo extends Thread {
+        
+        @Override
+        public void run() {
+            try {
+                while (true) {
+                    sem.acquire();
+                    Thread.sleep(duracionDiaEnSegundos*1000);
+                    seAcaboElDia = true;
+                    System.out.println("LISTO UN DIA SEGUN PM");
+                }
+            } catch (InterruptedException ex) {
+            Logger.getLogger(ProductorIntro.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    public ProjectManager(int diasRestantes, int numDeCedula, int duracionDiaEnSegundos) {
         this.diasRestantes = diasRestantes;
         this.numDeCedula = numDeCedula;
+        this.duracionDiaEnSegundos = duracionDiaEnSegundos;
     }
     
     @Override
     public void run() {
         try {
+            Hilo tHilo = new Hilo();
+            tHilo.start();
             while (true) {
+                sem.release();
                 estaViendoRM = false;
+                seAcaboElDia = false;
                 sCountdown.acquire();
-                LugoSancio_SOP_1.reduce();
+                diasRestantes--;
                 sCountdown.release();
                 while (!seAcaboElDia) {
                     estaViendoRM = !estaViendoRM;

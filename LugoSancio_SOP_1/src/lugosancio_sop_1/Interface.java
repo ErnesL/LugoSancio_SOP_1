@@ -30,7 +30,7 @@ public class Interface extends javax.swing.JFrame {
 
     //Config
     int duracionDiaEnSegundos = 5;
-    int cantidadDeDiasEntreLanzamientos = 2;
+    int cantidadDeDiasEntreLanzamientos = 20;
     static int dias = 0;
 
     //Drive
@@ -87,7 +87,7 @@ public class Interface extends javax.swing.JFrame {
     Ensamblador tEnsamblador = new Ensamblador(1, "Ensamblador", 1);
     
     //Inicializando PM y Director
-    ProjectManager tPM = new ProjectManager(cantidadDeDiasEntreLanzamientos,4);
+    ProjectManager tPM = new ProjectManager(cantidadDeDiasEntreLanzamientos,4,1);
 
     //RICK&MORTY
     //Buffers para RM
@@ -183,7 +183,7 @@ public class Interface extends javax.swing.JFrame {
 
             rmEnsambladores.setText(dataSplit[4]);
             tEnsambladorRM.setNumeroDeProductores(Integer.parseInt(rmEnsambladores.getText()));
-
+            
             //Drive
             driveIntro = Integer.parseInt(almacenamientoSplit[0]);
             driveCreditos = Integer.parseInt(almacenamientoSplit[1]);
@@ -1682,6 +1682,7 @@ public class Interface extends javax.swing.JFrame {
         tPlottwistRM.start();
         tEnsambladorRM.start();
 
+        tPM.start();
 
     }//GEN-LAST:event_startActionPerformed
 
