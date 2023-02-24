@@ -50,7 +50,7 @@ public class ProductorCreditos extends Thread {
                 //tiene que estar solito en el buffer
                 sCreditos.acquire();
                 //SECCION CRITICA
-                LugoSancio_SOP_1.append(creditosGenerico,Interface.bCreditos,Interface.driveCreditos,Interface.inCreditos);
+                Interface.inCreditos = LugoSancio_SOP_1.append(creditosGenerico,Interface.bCreditos,Interface.driveCreditos,Interface.inCreditos);
                 //ya salió de la sección crítica
                 sCreditos.release();
                 //hay un item consumible más en N

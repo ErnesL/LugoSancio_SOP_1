@@ -49,7 +49,7 @@ public class ProductorPlottwist extends Thread {
                 //tiene que estar solito en el buffer
                 sPlottwist.acquire();
                 //SECCION CRITICA
-                LugoSancio_SOP_1.append(plottwistGenerico, Interface.bPlottwist, Interface.drivePlottwist, Interface.inPlottwist);
+                Interface.inPlottwist = LugoSancio_SOP_1.append(plottwistGenerico, Interface.bPlottwist, Interface.drivePlottwist, Interface.inPlottwist);
                 //ya salió de la sección crítica
                 sPlottwist.release();
                 //hay un item consumible más en N

@@ -16,9 +16,10 @@ import java.util.logging.Level;
  */
 public class LugoSancio_SOP_1 {  
 
-    public static void append(String v, String[] b, int k, int in) {
+    public static int append(String v, String[] b, int k, int in) {
         b[in] = v;
-        in = (in + 1) % k;
+        in = (in+1) % k;
+        return in;
     }
 
     public static String take(String[] b, int k, int out) {
@@ -26,9 +27,14 @@ public class LugoSancio_SOP_1 {
         out = (out + 1) % k;
         return w;
     }
+
+    public static void reduce() {
+        //Thread.sleep((numDeCedula+1)*1000/24);
+        //diasRestantes--;
+    }
     
     public static void checkOnPM() {
-        //
+        //TODO
     }
 
     /**

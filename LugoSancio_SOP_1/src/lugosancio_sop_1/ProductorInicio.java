@@ -50,7 +50,7 @@ public class ProductorInicio extends Thread {
                 //tiene que estar solito en el buffer
                 sInicio.acquire();
                 //SECCION CRITICA
-                LugoSancio_SOP_1.append(inicioGenerico, Interface.bInicio, Interface.driveInicio, Interface.inInicio);
+                Interface.inInicio = LugoSancio_SOP_1.append(inicioGenerico, Interface.bInicio, Interface.driveInicio, Interface.inInicio);
                 //ya salió de la sección crítica
                 sInicio.release();
                 //hay un item consumible más en N

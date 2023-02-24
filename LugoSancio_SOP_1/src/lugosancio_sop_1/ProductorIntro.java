@@ -48,7 +48,7 @@ public class ProductorIntro extends Thread {
                 //tiene que estar solito en el buffer
                 sIntro.acquire();
                 //SECCION CRITICA
-                LugoSancio_SOP_1.append(introGenerica, Interface.bIntro, Interface.driveIntro, Interface.inIntro);
+                Interface.inIntro= LugoSancio_SOP_1.append(introGenerica, Interface.bIntro, Interface.driveIntro, Interface.inIntro);
                 //ya salió de la sección crítica
                 sIntro.release();
                 //hay un item consumible más en N
