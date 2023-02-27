@@ -8,12 +8,10 @@ package lugosancio_sop_1;
 import static lugosancio_sop_1.Interface.eInicio;
 import static lugosancio_sop_1.Interface.nInicio;
 import static lugosancio_sop_1.Interface.sInicio;
-import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import static lugosancio_sop_1.Interface.cantidadDeDiasEntreLanzamientos;
 import lugosancio_sop_1.LugoSancio_SOP_1;
 
 /**
@@ -34,7 +32,7 @@ public class ProductorInicio extends Thread {
         this.numeroDeProductores = numeroProductores;
         this.nombre = nombre;
         this.duracionDiaEnSegundos = duracionDiaEnSegundos;
-  
+
     }
 
     String inicioGenerico = "Miguel Mouse se levanta entusiasmado para ir a la escuela.\n";
@@ -42,21 +40,21 @@ public class ProductorInicio extends Thread {
     @Override
     public void run() {
         try {
-            while (true) {
+            while (cantidadDeDiasEntreLanzamientos > 0) {
                 //se está creando la inicio
-                sleep(duracionDiaEnSegundos * 1000 / numeroDeProductores);
+                sleep(duracionDiaEnSegundos * 2000 / numeroDeProductores);
                 //se revisa si hay espacio en el buffer
                 eInicio.acquire();
                 //tiene que estar solito en el buffer
                 sInicio.acquire();
                 //SECCION CRITICA
-                LugoSancio_SOP_1.inInicio = LugoSancio_SOP_1.append(inicioGenerico,LugoSancio_SOP_1.bInicio,LugoSancio_SOP_1.kInicio,LugoSancio_SOP_1.inInicio);
+                Interface.inInicio = LugoSancio_SOP_1.append(inicioGenerico, Interface.bInicio, Interface.driveInicio, Interface.inInicio);
                 //ya salió de la sección crítica
                 sInicio.release();
                 //hay un item consumible más en N
                 nInicio.release();
-                System.out.println("hay esta cantidad de inicios: " + nInicio.availablePermits());
                 textField.setText(Integer.toString(nInicio.availablePermits()));
+                montoPorPagar = montoPorPagar + sueldo * 24;
 
             }
 
@@ -70,8 +68,6 @@ public class ProductorInicio extends Thread {
         this.textField = textField;
     }
 
-      
-   
     public void setNumeroDeProductores(int numeroDeProductores) {
         this.numeroDeProductores = numeroDeProductores;
     }

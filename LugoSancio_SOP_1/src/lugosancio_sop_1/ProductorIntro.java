@@ -8,10 +8,10 @@ package lugosancio_sop_1;
 import static lugosancio_sop_1.Interface.eIntro;
 import static lugosancio_sop_1.Interface.nIntro;
 import static lugosancio_sop_1.Interface.sIntro;
-import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextField;
+import static lugosancio_sop_1.Interface.cantidadDeDiasEntreLanzamientos;
 import lugosancio_sop_1.LugoSancio_SOP_1;
 
 /**
@@ -40,7 +40,7 @@ public class ProductorIntro extends Thread {
     @Override
     public void run() {
         try {
-            while (true) {
+            while (cantidadDeDiasEntreLanzamientos > 0) {
                 //se está creando la intro
                 sleep(duracionDiaEnSegundos * 1000 / numeroDeProductores);
                 //se revisa si hay espacio en el buffer
@@ -48,13 +48,13 @@ public class ProductorIntro extends Thread {
                 //tiene que estar solito en el buffer
                 sIntro.acquire();
                 //SECCION CRITICA
-                LugoSancio_SOP_1.inIntro = LugoSancio_SOP_1.append(introGenerica,LugoSancio_SOP_1.bIntro,LugoSancio_SOP_1.kIntro,LugoSancio_SOP_1.inIntro);
+                Interface.inIntro= LugoSancio_SOP_1.append(introGenerica, Interface.bIntro, Interface.driveIntro, Interface.inIntro);
                 //ya salió de la sección crítica
                 sIntro.release();
                 //hay un item consumible más en N
                 nIntro.release();
-                System.out.println("hay esta cantidad de intros: " + nIntro.availablePermits());
                 textField.setText(Integer.toString(nIntro.availablePermits()));
+                montoPorPagar = montoPorPagar + sueldo * 24;
 
             }
 

@@ -5,59 +5,64 @@
  */
 package lugosancio_sop_1;
 
-import static lugosancio_sop_1.Interface.ePlottwist;
-import static lugosancio_sop_1.Interface.nPlottwist;
-import static lugosancio_sop_1.Interface.sPlottwist;
+import static lugosancio_sop_1.Interface.eIntro;
+import static lugosancio_sop_1.Interface.nIntro;
+import static lugosancio_sop_1.Interface.sIntro;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextField;
 import static lugosancio_sop_1.Interface.cantidadDeDiasEntreLanzamientos;
+import static lugosancio_sop_1.Interface.eIntroRM;
+import static lugosancio_sop_1.Interface.nIntroRM;
+import static lugosancio_sop_1.Interface.sIntroRM;
 import lugosancio_sop_1.LugoSancio_SOP_1;
 
 /**
  *
  * @author ernes
  */
-public class ProductorPlottwist extends Thread {
+public class ProductorIntroRM extends Thread {
 
     int numeroDeProductores = 1;
-    int sueldo = 7;
+    int sueldo = 5;
     int montoPorPagar = 0;
     int duracionDiaEnSegundos;
     int rendimiento = 1;
-    String nombre;
     JTextField textField;
 
-    public ProductorPlottwist(int numeroProductores, String nombre, int duracionDiaEnSegundos) {
+    String nombre;
+
+    public ProductorIntroRM(int numeroProductores, String nombre, int duracionDiaEnSegundos) {
         this.numeroDeProductores = numeroProductores;
         this.nombre = nombre;
         this.duracionDiaEnSegundos = duracionDiaEnSegundos;
     }
 
-    String plottwistGenerico = "pero resulta que.... el malo todo este tiempo ha sido Miguel Mouse!\n";
+    String introGenerica = "\noshiete oshiete watashi wa arigato gosaimasu\nATTACK ON TITAN TEMPORADA 4.5 PARTE 2 LADO A v1 (copy)\nDirigida por Satteo Mancio y Lugesto Erno\n";
 
     @Override
     public void run() {
         try {
             while (cantidadDeDiasEntreLanzamientos > 0) {
-                //se está creando la plottwist
-                sleep(duracionDiaEnSegundos * 2000 / numeroDeProductores);
+                //se está creando la intro
+                sleep(duracionDiaEnSegundos * 1000 / numeroDeProductores*2);
                 //se revisa si hay espacio en el buffer
-                ePlottwist.acquire();
+                eIntroRM.acquire();
                 //tiene que estar solito en el buffer
-                sPlottwist.acquire();
+                sIntroRM.acquire();
                 //SECCION CRITICA
-                Interface.inPlottwist = LugoSancio_SOP_1.append(plottwistGenerico, Interface.bPlottwist, Interface.drivePlottwist, Interface.inPlottwist);
+                Interface.inIntroRM = LugoSancio_SOP_1.append(introGenerica, Interface.bIntroRM, Interface.driveIntroRM, Interface.inIntroRM);
                 //ya salió de la sección crítica
-                sPlottwist.release();
+                sIntroRM.release();
                 //hay un item consumible más en N
-                nPlottwist.release();
-                textField.setText(Integer.toString(nPlottwist.availablePermits()));
+                nIntroRM.release();
+                textField.setText(Integer.toString(nIntroRM.availablePermits()));
                 montoPorPagar = montoPorPagar + sueldo * 24;
+
             }
 
         } catch (InterruptedException ex) {
-            Logger.getLogger(ProductorPlottwist.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProductorIntroRM.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }

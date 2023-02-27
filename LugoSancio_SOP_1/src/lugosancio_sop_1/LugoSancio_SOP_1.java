@@ -16,14 +16,6 @@ import java.util.logging.Level;
  */
 public class LugoSancio_SOP_1 {
 
-    
-    /*
-    * s = mutual exclusion in buffer
-    * n = consumable items in buffer
-    * e = empty spaces in buffer
-    */
-
-    
     public static int append(String v, String[] b, int k, int in) {
         b[in] = v;
         in = (in+1) % k;
@@ -44,6 +36,7 @@ public class LugoSancio_SOP_1 {
     public static void checkOnPM() {
         //TODO
     }
+
     /**
      * @param args the command line arguments
      */

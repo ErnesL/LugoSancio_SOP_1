@@ -14,55 +14,33 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextField;
 import static lugosancio_sop_1.Interface.cantidadDeDiasEntreLanzamientos;
+import static lugosancio_sop_1.Interface.driveCierreRM;
+import static lugosancio_sop_1.Interface.eCierreRM;
+import static lugosancio_sop_1.Interface.nCierreRM;
+import static lugosancio_sop_1.Interface.sCierreRM;
 import lugosancio_sop_1.LugoSancio_SOP_1;
-import static lugosancio_sop_1.LugoSancio_SOP_1.sCierre;
-import static lugosancio_sop_1.LugoSancio_SOP_1.nCierre;
-import static lugosancio_sop_1.LugoSancio_SOP_1.eCierre;
 
 /**
  *
  * @author ernes
  */
-public class ProductorCierre extends Thread {
+public class ProductorCierreRM extends Thread {
 
     int numeroDeProductores = 1;
     int sueldo = 8;
     int montoPorPagar = 0;
     int duracionDiaEnSegundos;
-    int rendimiento = 1;
-    Semaphore sem;
+    int rendimiento = 2;
     String nombre;
     JTextField textField;
 
-    public ProductorCierre(int numeroProductores, String nombre, int duracionDiaEnSegundos) {
+    public ProductorCierreRM(int numeroProductores, String nombre, int duracionDiaEnSegundos) {
         this.numeroDeProductores = numeroProductores;
         this.nombre = nombre;
-
         this.duracionDiaEnSegundos = duracionDiaEnSegundos;
 
     }
 
-//    @Override
-//    public void run() {
-//        try {
-//            sem.acquire();
-//            while (Interface.inventarioCierre < Interface.driveCierre) {
-//                Thread.sleep(duracionDiaEnSegundos*1000);
-//                this.montoPorPagar = this.montoPorPagar + this.sueldo * this.numeroDeProductores;
-//                Interface.inventarioCierre++;
-//                System.out.println("Hay " + Interface.inventarioCierre +" "+ this.nombre + " creadas");
-//            }
-//            System.out.println(this.nombre + "ya se lleno");
-//            System.out.println(this.nombre +"El monto a pagar es: " + this.montoPorPagar);
-//            sem.release();
-//            
-//            
-//
-//        } catch (InterruptedException ex) {
-//            Logger.getLogger(ProductorCierre.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//
-//    }
     String cierreGenerico = "y a la final todos se murieron y nunca se encontró la gema del poder, FIN.\n";
 
     @Override
@@ -70,23 +48,23 @@ public class ProductorCierre extends Thread {
         try {
             while (cantidadDeDiasEntreLanzamientos > 0) {
                 //se está creando la cierre
-                sleep(duracionDiaEnSegundos * 4000 / numeroDeProductores);
+                sleep(duracionDiaEnSegundos * 2000 / numeroDeProductores);
                 //se revisa si hay espacio en el buffer
-                eCierre.acquire();
+                eCierreRM.acquire();
                 //tiene que estar solito en el buffer
-                sCierre.acquire();
+                sCierreRM.acquire();
                 //SECCION CRITICA
-                Interface.inCierre = LugoSancio_SOP_1.append(cierreGenerico, Interface.bCierre, driveCierre, Interface.inCierre);
+                Interface.inCierreRM = LugoSancio_SOP_1.append(cierreGenerico, Interface.bCierreRM, driveCierreRM, Interface.inCierreRM);
                 //ya salió de la sección crítica
-                sCierre.release();
+                sCierreRM.release();
                 //hay un item consumible más en N
-                nCierre.release();
-                textField.setText(Integer.toString(nCierre.availablePermits()));
+                nCierreRM.release();
+                textField.setText(Integer.toString(nCierreRM.availablePermits()));
                 montoPorPagar = montoPorPagar + sueldo*24;
             }
 
         } catch (InterruptedException ex) {
-            Logger.getLogger(ProductorCierre.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProductorCierreRM.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -107,7 +85,6 @@ public class ProductorCierre extends Thread {
         this.sueldo = sueldo;
     }
 
-
     public String getNombre() {
         return nombre;
     }
@@ -123,5 +100,4 @@ public class ProductorCierre extends Thread {
     public void setMontoPorPagar(int montoPorPagar) {
         this.montoPorPagar = montoPorPagar;
     }
-
 }

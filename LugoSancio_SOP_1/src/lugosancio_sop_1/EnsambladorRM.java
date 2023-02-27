@@ -10,26 +10,41 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextField;
 import static lugosancio_sop_1.Interface.eCierre;
+import static lugosancio_sop_1.Interface.eCierreRM;
 import static lugosancio_sop_1.Interface.eCreditos;
+import static lugosancio_sop_1.Interface.eCreditosRM;
 import static lugosancio_sop_1.Interface.eInicio;
+import static lugosancio_sop_1.Interface.eInicioRM;
 import static lugosancio_sop_1.Interface.eIntro;
+import static lugosancio_sop_1.Interface.eIntroRM;
 import static lugosancio_sop_1.Interface.ePlottwist;
+import static lugosancio_sop_1.Interface.ePlottwistRM;
 import static lugosancio_sop_1.Interface.nCierre;
+import static lugosancio_sop_1.Interface.nCierreRM;
 import static lugosancio_sop_1.Interface.nCreditos;
+import static lugosancio_sop_1.Interface.nCreditosRM;
 import static lugosancio_sop_1.Interface.nInicio;
+import static lugosancio_sop_1.Interface.nInicioRM;
 import static lugosancio_sop_1.Interface.nIntro;
+import static lugosancio_sop_1.Interface.nIntroRM;
 import static lugosancio_sop_1.Interface.nPlottwist;
+import static lugosancio_sop_1.Interface.nPlottwistRM;
 import static lugosancio_sop_1.Interface.sCierre;
+import static lugosancio_sop_1.Interface.sCierreRM;
 import static lugosancio_sop_1.Interface.sCreditos;
+import static lugosancio_sop_1.Interface.sCreditosRM;
 import static lugosancio_sop_1.Interface.sInicio;
+import static lugosancio_sop_1.Interface.sInicioRM;
 import static lugosancio_sop_1.Interface.sIntro;
+import static lugosancio_sop_1.Interface.sIntroRM;
 import static lugosancio_sop_1.Interface.sPlottwist;
+import static lugosancio_sop_1.Interface.sPlottwistRM;
 
 /**
  *
  * @author ernes
  */
-public class Ensamblador extends Thread {
+public class EnsambladorRM extends Thread {
 
     int numeroDeProductores = 1;
     int sueldo = 8;
@@ -41,71 +56,70 @@ public class Ensamblador extends Thread {
 
     String nombre;
 
-    public Ensamblador(int numeroProductores, String nombre, int duracionDiaEnSegundos) {
+    public EnsambladorRM(int numeroProductores, String nombre, int duracionDiaEnSegundos) {
         this.numeroDeProductores = numeroProductores;
         this.nombre = nombre;
         this.duracionDiaEnSegundos = duracionDiaEnSegundos;
     }
-    
+
     @Override
     public void run() {
         try {
             while (true) {
-                
+
                 String nuevoCapitulo = "";
                 String w = "";
-                
+
                 //INTRO
-                nIntro.acquire();
-                sIntro.acquire();
-                w = LugoSancio_SOP_1.take(Interface.bIntro, Interface.driveIntro, Interface.outIntro);
-                Interface.outIntro = (Interface.outIntro+1)%Interface.driveIntro;
-                sIntro.release();
-                eIntro.release();
+                nIntroRM.acquire();
+                sIntroRM.acquire();
+                w = LugoSancio_SOP_1.take(Interface.bIntroRM, Interface.driveIntroRM, Interface.outIntroRM);
+                Interface.outIntroRM = (Interface.outIntroRM+1)%Interface.driveIntroRM;
+                sIntroRM.release();
+                eIntroRM.release();
 //                nuevoCapitulo = nuevoCapitulo.concat(w);
 
                 //INICIO
-                nInicio.acquire();
-                sInicio.acquire();
-                w = LugoSancio_SOP_1.take(Interface.bInicio, Interface.driveInicio, Interface.outInicio);
-                Interface.outInicio = (Interface.outInicio+1)%Interface.driveInicio;
-                sInicio.release();
-                eInicio.release();
+                nInicioRM.acquire();
+                sInicioRM.acquire();
+                w = LugoSancio_SOP_1.take(Interface.bInicioRM, Interface.driveInicioRM, Interface.outInicioRM);
+                Interface.outInicioRM = (Interface.outInicioRM+1)%Interface.driveInicioRM;
+                sInicioRM.release();
+                eInicioRM.release();
 //                nuevoCapitulo = nuevoCapitulo.concat(w);
 
                 //PLOT TWIST
                 if (capitulosListos % 5 == 4) {
-                    nPlottwist.acquire();
-                    sPlottwist.acquire();
-                    w = LugoSancio_SOP_1.take(Interface.bPlottwist, Interface.drivePlottwist, Interface.outPlottwist);
-                    Interface.outPlottwist = (Interface.outPlottwist+1)%Interface.drivePlottwist;
-                    sPlottwist.release();
-                    ePlottwist.release();
+                    nPlottwistRM.acquire();
+                    sPlottwistRM.acquire();
+                    w = LugoSancio_SOP_1.take(Interface.bPlottwistRM, Interface.drivePlottwistRM, Interface.outPlottwistRM);
+                    Interface.outPlottwistRM = (Interface.outPlottwistRM+1)%Interface.drivePlottwistRM;
+                    sPlottwistRM.release();
+                    ePlottwistRM.release();
 //                    nuevoCapitulo = nuevoCapitulo.concat(w);
                 }
-                
+
                 //CIERRE
-                nCierre.acquire();
-                sCierre.acquire();
-                w = LugoSancio_SOP_1.take(Interface.bCierre, Interface.driveCierre, Interface.outCierre);
-                Interface.outCierre = (Interface.outCierre+1)%Interface.driveCierre;
-                sCierre.release();
-                eCierre.release();
+                nCierreRM.acquire();
+                sCierreRM.acquire();
+                w = LugoSancio_SOP_1.take(Interface.bCierreRM, Interface.driveCierreRM, Interface.outCierreRM);
+                Interface.outCierreRM = (Interface.outCierreRM+1)%Interface.driveCierreRM;
+                sCierreRM.release();
+                eCierreRM.release();
 //                nuevoCapitulo = nuevoCapitulo.concat(w);
 
                 //CREDITOS
-                nCreditos.acquire();
-                sCreditos.acquire();
-                w = LugoSancio_SOP_1.take(Interface.bCreditos, Interface.driveCreditos, Interface.outCreditos);
-                Interface.outCreditos = (Interface.outCreditos+1)%Interface.driveCreditos;
-                sCreditos.release();
-                eCreditos.release();
+                nCreditosRM.acquire();
+                sCreditosRM.acquire();
+                w = LugoSancio_SOP_1.take(Interface.bCreditosRM, Interface.driveCreditosRM, Interface.outCreditosRM);
+                Interface.outCreditosRM = (Interface.outCreditosRM+1)%Interface.driveCreditosRM;
+                sCreditosRM.release();
+                eCreditosRM.release();
 //                nuevoCapitulo = nuevoCapitulo.concat(w);
 
                 //dormir ensamblador dos días para que cree el cap
                 Thread.sleep(duracionDiaEnSegundos * 2000);
                 capitulosListos++;
-                System.out.println(capitulosListos);
                 textField.setText(Integer.toString(capitulosListos));
                 montoPorPagar = montoPorPagar + sueldo*numeroDeProductores;
 
@@ -117,10 +131,6 @@ public class Ensamblador extends Thread {
 
     public void setTextField(JTextField textField) {
         this.textField = textField;
-    }
-
-    public int getCapitulosListos() {
-        return capitulosListos;
     }
 
      
@@ -147,6 +157,11 @@ public class Ensamblador extends Thread {
     public int getMontoPorPagar() {
         return montoPorPagar;
     }
+
+    public int getCapitulosListos() {
+        return capitulosListos;
+    }
+    
 
     public void setMontoPorPagar(int montoPorPagar) {
         this.montoPorPagar = montoPorPagar;
